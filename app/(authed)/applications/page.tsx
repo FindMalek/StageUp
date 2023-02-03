@@ -1,8 +1,8 @@
-import { getUrl } from '@/lib/utils';
-import { authOptions } from '@/lib/auth';
-
 import { getServerSession } from 'next-auth';
 import { Internship } from '@prisma/client';
+
+import { getUrl } from '@/lib/utils';
+import { authOptions } from '@/lib/auth';
 
 import { DataTable } from '@/components/sections/application/enterprise/DataTable';
 import AccessDenied from '@/components/sections/display/AccessDenied';
