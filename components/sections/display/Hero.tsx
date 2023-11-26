@@ -1,8 +1,5 @@
 import Link from "next/link";
-
-import Logo from "@/components/overall/Logo";
 import { Button } from "@/components/ui/Button";
-
 import { FaChevronRight } from "react-icons/fa6";
 
 export default function Herosection() {
@@ -31,11 +28,11 @@ export default function Herosection() {
           fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)"
         />
       </svg>
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-          <Logo className="h-11 w-11" />
+          
           <div className="mt-24 sm:mt-32 lg:mt-16">
-            <Link href="#" className="inline-flex space-x-6">
+            <Link href="/blogs" className="inline-flex space-x-6">
               <span className="rounded-full bg-blue-600/10 px-3 py-1 text-sm font-semibold leading-6 text-blue-600 ring-1 ring-inset ring-blue-600/10">
                 Qoui de neuf
               </span>

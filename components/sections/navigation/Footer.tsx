@@ -9,8 +9,6 @@ import { TextField } from "@/components/overall/Fields";
 import Logo from "@/components/overall/Logo";
 import NavLinks from "@/components/sections/navigation/NavLinks";
 
-import qrCode from "@image/footer/qr-code.svg";
-
 export default function Footer() {
   return (
     <footer className="border-t border-gray-200">
