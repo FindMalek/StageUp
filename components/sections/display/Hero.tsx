@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Logo from "@/components/overall/Logo";
-import { Button } from "@/components/ui/eButton";
+import { Button } from "@/components/ui/Button";
 
 import { FaChevronRight } from "react-icons/fa6";
 

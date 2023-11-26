@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Popover } from "@headlessui/react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Button } from "@/components/ui/eButton";
+import { Button } from "@/components/ui/Button";
 import MobileNavLink from "@/components/sections/navigation/MobileNavLink";
 
 import { headerNavLinks } from "@data/navigation";

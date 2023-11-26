@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { QrCodeBorder } from "@/components/icons/Footer";
 
-import { Button } from "@/components/ui/eButton";
+import { Button } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import { TextField } from "@/components/overall/Fields";
 import Logo from "@/components/overall/Logo";
