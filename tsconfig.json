@@ -26,6 +26,7 @@
       "@hooks/*": ["./hooks/*"],
       "@types/*": ["./types/*"],
       "@data/*": ["./data/*"],
+      "@image/*": ["./public/images/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

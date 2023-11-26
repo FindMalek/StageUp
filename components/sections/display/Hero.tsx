@@ -1,5 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
+
+import Logo from "@/components/overall/Logo";
+import { Button } from "@/components/ui/Button";
 
 import { FaChevronRight } from "react-icons/fa6";
 
@@ -31,13 +33,7 @@ export default function Herosection() {
       </svg>
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-          <Image
-            className="h-11 w-11"
-            height={32}
-            width={32}
-            src="/logo/logo.svg"
-            alt="StageUp Logo"
-          />
+          <Logo className="h-11 w-11" />
           <div className="mt-24 sm:mt-32 lg:mt-16">
             <Link href="#" className="inline-flex space-x-6">
               <span className="rounded-full bg-blue-600/10 px-3 py-1 text-sm font-semibold leading-6 text-blue-600 ring-1 ring-inset ring-blue-600/10">
@@ -64,18 +60,13 @@ export default function Herosection() {
             entreprises.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
-            <Link
-              href="/register"
-              className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-            >
-              Commencer
+            <Link href="/register">
+              <Button variant="default">Commencer</Button>
             </Link>
-            <Link
-              href="/about"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              En savoir plus{" "}
-              <span aria-hidden="true">→</span>
+            <Link href="/about">
+              <Button variant="link">
+                En savoir plus <span aria-hidden="true">→</span>
+              </Button>
             </Link>
           </div>
         </div>
@@ -85,8 +76,8 @@ export default function Herosection() {
               <img
                 src="/image/sections/herosection.webp"
                 alt="A temporary screen shot from LinkedIn."
-                width={1230}
-                height={929}
+                width={2432}
+                height={1442}
                 className="w-[67rem] rounded-md shadow-2xl ring-1 ring-gray-900/10"
               />
             </div>

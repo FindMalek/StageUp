@@ -3,6 +3,9 @@ import "@styles/globals.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
+import Header from "@/components/sections/navigation/Header";
+import Footer from "@/components/sections/navigation/Footer";
+
 export const metadata: Metadata = {
   title: "StageUp - Your Professional Community",
   description:
@@ -16,7 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>{children}</body>
+      <body className={GeistSans.className}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
