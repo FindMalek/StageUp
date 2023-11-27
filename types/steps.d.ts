@@ -1,4 +1,4 @@
-export type Step = {
+export type StepType = {
   name: any;
   summary: string;
   description: string;

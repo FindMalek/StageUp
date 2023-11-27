@@ -3,18 +3,18 @@ import Image from "next/image";
 
 import { Tab } from "@headlessui/react";
 
-import Feature from "@components/sections/how-it-works/Feature";
+import Step from "@/components/sections/how-it-works/Step";
 
-import { type Step } from "@/types/steps";
+import { type StepType } from "@/types/steps";
 
-export default function HowItWorksDesktop(steps: Step[]) {
+export default function HowItWorksDesktop(steps: StepType[]) {
   return (
     <Tab.Group as="div" className="hidden lg:mt-20 lg:block">
       {({ selectedIndex }) => (
         <>
           <Tab.List className="grid grid-cols-3 gap-x-8">
             {Object.values(steps).map((step, stepIndex) => (
-              <Feature
+              <Step
                 key={step.name}
                 step={{
                   ...step,

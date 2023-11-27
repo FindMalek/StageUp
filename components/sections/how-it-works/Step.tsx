@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { type FeatureProps } from "@/types/feature";
 
-export default function Feature({
+export default function Step({
   step,
   isActive,
   className,
@@ -30,7 +30,7 @@ export default function Feature({
       >
         {step.name}
       </h3>
-      <p className="mt-2 font-display text-xl text-slate-900">{step.summary}</p>
+      <p className="mt-2 font-medium text-xl text-slate-900">{step.summary}</p>
       <p className="mt-4 text-sm text-slate-600">{step.description}</p>
     </div>
   );

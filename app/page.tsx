@@ -11,8 +11,7 @@ export default function Home() {
       <Advatanages />
       <HowItWorks />
       <div>témoinaillages</div>
-      <div> avantage de stageup</div>
-      <div>Démonstration en video de 3 division</div>
+      <div>avantage de stageup</div>
       <div>CTA</div>
       <div>faqs</div>
       <div>sponsors & partners</div>

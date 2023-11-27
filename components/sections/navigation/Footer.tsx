@@ -44,11 +44,12 @@ export default function Footer() {
               <p className="text-base font-semibold text-gray-900">
                 <Link href="https://stage-up.vercel.app/">
                   <span className="absolute inset-0 sm:rounded-2xl" />
-                  Télécharger l&apos;application
+                  Invitez vos collègues
                 </Link>
               </p>
               <p className="mt-1 text-sm text-gray-700">
-                Scannez le code QR pour télécharger l&apos;application.
+                Scannez le code QR pour partager le lien de StageUp avec vos
+                collègues.
               </p>
             </div>
           </div>
