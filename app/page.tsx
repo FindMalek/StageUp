@@ -2,6 +2,9 @@ import Herosection from "@/components/sections/display/Hero";
 import AboutUs from "@/components/sections/display/AboutUs";
 import Advatanages from "@/components/sections/display/Advantages";
 import HowItWorks from "@/components/sections/how-it-works/HowItWorks";
+import Testimonials from "@/components/sections/display/Testimonials";
+import CallToAction from "@/components/sections/display/CallToAction";
+import FAQs from "@/components/sections/display/FAQs";
 
 export default function Home() {
   return (
@@ -10,11 +13,9 @@ export default function Home() {
       <AboutUs />
       <Advatanages />
       <HowItWorks />
-      <div>témoinaillages</div>
-      <div>avantage de stageup</div>
-      <div>CTA</div>
-      <div>faqs</div>
-      <div>sponsors & partners</div>
+      <Testimonials />
+      <CallToAction />
+      <FAQs />
     </>
   );
 }
