@@ -18,7 +18,7 @@ export default function LoginPage() {
               <p className="mt-2 text-sm leading-6 text-gray-500">
                 N'avez-vous pas de compte ?{" "}
                 <Link
-                  href="/registre"
+                  href="/register"
                   className="font-semibold text-blue-600 h  over:text-blue-500"
                 >
                   S&apos;inscrire maintenant
