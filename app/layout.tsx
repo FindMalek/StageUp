@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: "https://stageup.vercel.app/",
     siteName: "StageUp",
     type: "website",
-    images: "https://stageup.vercel.app/og.png",
+    images: "https://stageup.vercel.app/og.jpeg",
   },
   twitter: {
     card: "summary_large_image",
