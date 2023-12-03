@@ -3,6 +3,8 @@ import "@styles/globals.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
+import { Toaster } from "@/components/ui/Toaster"
+
 import Header from "@/components/sections/navigation/Header";
 import Footer from "@/components/sections/navigation/Footer";
 
@@ -38,6 +40,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

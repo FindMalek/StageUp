@@ -5,6 +5,8 @@ import RegisterForm from "@/components/sections/forms/Register";
 
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
+import { Button } from "@/components/ui/Button";
+
 export default function RegisterPage() {
   return (
     <>
@@ -39,30 +41,27 @@ export default function RegisterPage() {
                   </div>
                   <div className="relative flex justify-center text-sm font-medium leading-6">
                     <span className="bg-white px-6 text-gray-900">
-                      Or continue with
+                      Ou bien continuez avec
                     </span>
                   </div>
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                  <Link
-                    href="#"
-                    className="flex w-full items-center justify-center gap-3 rounded-md bg-[#f01d1d] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f0981d]"
-                  >
-                    <FaGoogle className="h-5 w-5" />
-                    <span className="text-sm font-semibold leading-6">
-                      Google
-                    </span>
+                  <Link href="#">
+                    <Button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#f01d1d] hover:bg-[#8e1212]">
+                      <FaGoogle className="h-5 w-5" />
+                      <span className="text-sm font-semibold leading-6">
+                        Google
+                      </span>
+                    </Button>
                   </Link>
-
-                  <Link
-                    href="#"
-                    className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
-                  >
-                    <FaGithub className="h-5 w-5" />
-                    <span className="text-sm font-semibold leading-6">
-                      GitHub
-                    </span>
+                  <Link href="#">
+                    <Button className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] hover:bg-[#4b5561]">
+                      <FaGithub className="h-5 w-5" />
+                      <span className="text-sm font-semibold leading-6">
+                        GitHub
+                      </span>
+                    </Button>
                   </Link>
                 </div>
               </div>
