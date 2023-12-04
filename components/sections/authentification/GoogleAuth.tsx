@@ -9,8 +9,7 @@ export default function GithubAuth() {
   const { data: session } = useSession();
 
   if (session) {
-    // TODO: Direct to /login/[auth]/welcome with 'session' props
-    return <>{JSON.stringify(session)}</>;
+    window.location.href = "/login/welcome/form";
   } else {
     return (
       <Button

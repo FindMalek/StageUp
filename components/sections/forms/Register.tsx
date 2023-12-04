@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
+import { useSession } from "next-auth/react";
 
 import {
   Form,
@@ -28,6 +29,12 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm() {
+  const { data: session } = useSession();
+
+  if (session) {
+    window.location.href = "/login/welcome/form";
+  }
+
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,8 +53,7 @@ export default function RegisterForm() {
       });
 
       if (response.ok) {
-        // TODO: Direct to /login/[auth]/welcome with 'session' props
-        return <>{JSON.stringify(response)}</>;
+        window.location.href = "/login/welcome/form";
       } else {
         toast({
           title: "Connexion échouée.",

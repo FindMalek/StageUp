@@ -33,8 +33,8 @@ export default function Footer() {
             <div className="relative flex h-24 w-24 flex-none items-center justify-center">
               <QrCodeBorder className="absolute inset-0 h-full w-full stroke-gray-300 transition-colors group-hover:stroke-cyan-500" />
               <Image
-                src="image/footer/qr-code.svg"
-                alt=""
+                src="/image/footer/qr-code.svg"
+                alt="QR Code of StageUp"
                 width={80}
                 height={80}
                 unoptimized

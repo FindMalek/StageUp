@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import {
   Form,
@@ -29,6 +30,12 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const { data: session } = useSession();
+
+  if (session) {
+    window.location.href = "/login/welcome/form";
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
