@@ -3,7 +3,8 @@ import "@styles/globals.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
-import { Toaster } from "@/components/ui/Toaster"
+import { Toaster } from "@/components/ui/Toaster";
+import ProvidersLayout from "@/components/sections/authentification/ProviderLayout";
 
 import Header from "@/components/sections/navigation/Header";
 import Footer from "@/components/sections/navigation/Footer";
@@ -37,10 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={GeistSans.className}>
-        <Header />
-        {children}
-        <Footer />
-        <Toaster />
+        <ProvidersLayout>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster />
+        </ProvidersLayout>
       </body>
     </html>
   );

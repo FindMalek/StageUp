@@ -46,7 +46,8 @@ export default function RegisterForm() {
       });
 
       if (response.ok) {
-        console.log(await response.json());
+        // TODO: Direct to /login/[auth]/welcome with 'session' props
+        return <>{JSON.stringify(response)}</>;
       } else {
         toast({
           title: "Connexion échouée.",
