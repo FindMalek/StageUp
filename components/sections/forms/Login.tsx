@@ -5,7 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { useSession, signIn } from "next-auth/react";
+
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -36,6 +39,7 @@ export default function LoginForm() {
     window.location.href = "/login/welcome/form";
   }
 
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,8 +49,30 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+
+    const Data = await signIn("credentials", {
+      redirect: false,
+      email: values.email,
+      password: values.password,
+    });
+
+    if (Data?.status !== 200) {
+      form.setError("email", {
+        type: "manual",
+        message:
+          "L'adresse email peut être incorrecte ou le compte n'existe pas.",
+      });
+      form.setError("password", {
+        type: "manual",
+        message: "Le mot de passe peut être incorrect.",
+      });
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -113,9 +139,16 @@ export default function LoginForm() {
         </div>
 
         <div>
-          <Button type="submit" className="flex w-full justify-center">
-            Se connecter
-          </Button>
+          {loading ? (
+            <Button type="submit" className="flex w-full justify-center">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              En cours...
+            </Button>
+          ) : (
+            <Button type="submit" className="flex w-full justify-center">
+              Se connecter
+            </Button>
+          )}
         </div>
       </form>
     </Form>

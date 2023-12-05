@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -36,6 +39,7 @@ export default function RegisterForm() {
   }
 
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,6 +49,7 @@ export default function RegisterForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     try {
       const response = await fetch("/api/user", {
         method: "POST",
@@ -92,6 +97,7 @@ export default function RegisterForm() {
         ),
       });
     }
+    setLoading(false);
   }
 
   return (
@@ -126,12 +132,19 @@ export default function RegisterForm() {
         />
 
         <div>
-          <Button type="submit" className="flex w-full justify-center">
-            Continue{" "}
-            <span aria-hidden="true" className="pl-2">
-              →
-            </span>
-          </Button>
+          {loading ? (
+            <Button type="submit" className="flex w-full justify-center">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              En cours...
+            </Button>
+          ) : (
+            <Button type="submit" className="flex w-full justify-center">
+              Continue{" "}
+              <span aria-hidden="true" className="pl-2">
+                →
+              </span>
+            </Button>
+          )}
         </div>
       </form>
     </Form>

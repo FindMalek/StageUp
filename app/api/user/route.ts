@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         },
         {
           status: 409,
-        }
+        },
       );
     }
 
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       },
       {
         status: 201,
-      }
+      },
     );
   } catch (error) {
     return NextResponse.json(
@@ -54,7 +54,55 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-      }
+      },
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const body = await request.json();
+    const { email } = body;
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        {
+          user: null,
+          message: "L'utilisateur n'existe pas.",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        user: {
+          id: user.id,
+          email: user.email,
+        },
+        message: "L'utilisateur a ete trouve avec succes.",
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        user: null,
+        message:
+          "Une erreur s'est produite lors de la recherche de l'utilisateur.",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }
