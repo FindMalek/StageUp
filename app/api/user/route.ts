@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { username, email, password } = body;
 
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -21,13 +21,14 @@ export async function POST(request: Request) {
         },
         {
           status: 409,
-        },
+        }
       );
     }
 
     const hashedPassword = await hash(password, 10);
     const newUser = await prisma.user.create({
       data: {
+        name: username,
         email,
         password: hashedPassword,
       },
@@ -37,13 +38,14 @@ export async function POST(request: Request) {
       {
         user: {
           id: newUser.id,
+          name: newUser.name,
           email: newUser.email,
         },
         message: "L'utilisateur a ete cree avec succes.",
       },
       {
         status: 201,
-      },
+      }
     );
   } catch (error) {
     return NextResponse.json(
@@ -54,7 +56,7 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-      },
+      }
     );
   }
 }
@@ -77,7 +79,7 @@ export async function GET(request: Request) {
         },
         {
           status: 404,
-        },
+        }
       );
     }
 
@@ -85,13 +87,14 @@ export async function GET(request: Request) {
       {
         user: {
           id: user.id,
+          name: user.name,
           email: user.email,
         },
         message: "L'utilisateur a ete trouve avec succes.",
       },
       {
         status: 200,
-      },
+      }
     );
   } catch (error) {
     return NextResponse.json(
@@ -102,7 +105,7 @@ export async function GET(request: Request) {
       },
       {
         status: 500,
-      },
+      }
     );
   }
 }

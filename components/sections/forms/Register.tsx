@@ -23,6 +23,9 @@ import { Input } from "@/components/ui/Input";
 import { ToastAction } from "@/components/ui/Toast";
 
 const formSchema = z.object({
+  username: z.string().min(3, {
+    message: "Le nom d'utilisateur doit contenir au moins 3 caractères.",
+  }),
   email: z.string().email({
     message: "Veuillez saisir une adresse email valide.",
   }),
@@ -43,6 +46,7 @@ export default function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -103,6 +107,20 @@ export default function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom d'utilisateur</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="email"
