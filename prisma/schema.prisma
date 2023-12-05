@@ -35,16 +35,17 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  email         String      @unique
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
   password      String?
   name          String?
   image         String?
   accounts      Account[]
   sessions      Session[]
 
-  intern        Intern?
-  enterprise    Enterprise?
+  intern     Intern?
+  enterprise Enterprise?
 }
 
 model VerificationToken {
@@ -56,8 +57,8 @@ model VerificationToken {
 }
 
 model Intern {
-  id           String       @id @default(cuid())
-  userId       String       @unique
+  id     String @id @default(cuid())
+  userId String @unique
 
   university   String
   degrees      Degree[]
@@ -67,37 +68,37 @@ model Intern {
   resumeUrl    String
   overview     String?      @db.Text
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Degree {
-  id           String @id @default(cuid())
+  id String @id @default(cuid())
 
   internId     String
   degreeName   String
   institution  String
   dateObtained DateTime
 
-  intern       Intern @relation(fields: [internId], references: [id], onDelete: Cascade)
+  intern Intern @relation(fields: [internId], references: [id], onDelete: Cascade)
 }
 
 model Internship {
-  id           String      @id @default(cuid())
+  id           String  @id @default(cuid())
   internId     String?
   enterpriseId String?
 
-  title        String
-  description  String      @db.Text
-  startDate    DateTime
-  endDate      DateTime?
+  title       String
+  description String    @db.Text
+  startDate   DateTime
+  endDate     DateTime?
 
-  intern       Intern?     @relation(fields: [internId], references: [id], onDelete: Cascade)
-  enterprise   Enterprise? @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
+  intern     Intern?     @relation(fields: [internId], references: [id], onDelete: Cascade)
+  enterprise Enterprise? @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
 }
 
 model Enterprise {
-  id          String       @id @default(cuid())
-  userId      String       @unique
+  id     String @id @default(cuid())
+  userId String @unique
 
   companyName String
   industry    String

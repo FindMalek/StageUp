@@ -68,8 +68,8 @@ export default function LoginForm() {
         type: "manual",
         message: "Le mot de passe peut être incorrect.",
       });
-      setLoading(false);
-      return;
+    } else {
+      window.location.href = "/login/welcome/form";
     }
 
     setLoading(false);
