@@ -11,6 +11,7 @@ import { MenuIcon, ChevronUpIcon } from "@/components/icons/Navbar";
 
 import NavLinks from "@/components/sections/navigation/NavLinks";
 import MobileAnimatePresence from "@/components/sections/navigation/MobileAnimatePresence";
+import { DesktopAuthButtons } from "@/components/sections/navigation/AuthButtons";
 
 export default function Header() {
   return (
@@ -48,14 +49,7 @@ export default function Header() {
                 </>
               )}
             </Popover>
-            <Link href="/login">
-              <Button variant="outline" className="hidden lg:block">
-                Se connecter
-              </Button>
-            </Link>
-            <Link href="/register">
-              <Button className="hidden lg:block">S&apos;inscrire</Button>
-            </Link>
+            <DesktopAuthButtons />
           </div>
         </Container>
       </nav>

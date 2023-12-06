@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Popover } from "@headlessui/react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Button } from "@/components/ui/Button";
 import MobileNavLink from "@/components/sections/navigation/MobileNavLink";
+import { MobileAuthButtons } from "@/components/sections/navigation/AuthButtons";
 
 import { headerNavLinks } from "@data/navigation";
 
@@ -41,16 +40,7 @@ export default function MobileAnimatePresence({ open }: { open: boolean }) {
                 </MobileNavLink>
               ))}
             </div>
-            <div className="mt-8 flex flex-col gap-4">
-              <Link href="/login">
-                <Button variant="outline" className="w-full">
-                  Se connecter
-                </Button>
-              </Link>
-              <Link href="#">
-                <Button className="w-full">S&apos;inscrire gratuitement</Button>
-              </Link>
-            </div>
+            <MobileAuthButtons />
           </Popover.Panel>
         </>
       )}

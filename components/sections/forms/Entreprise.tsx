@@ -111,8 +111,6 @@ export default function EnterpriseForm(session: SessionType) {
         },
       };
 
-      console.log(userData.foundedDate);
-
       const res = await fetch("/api/entreprise", {
         method: "POST",
         headers: {
@@ -120,7 +118,7 @@ export default function EnterpriseForm(session: SessionType) {
         },
         body: JSON.stringify(userData),
       });
-      console.log(res);
+
       if (res.status !== 200) {
         throw new Error(await res.text());
       }
@@ -283,7 +281,7 @@ export default function EnterpriseForm(session: SessionType) {
                         {field.value ? (
                           format(field.value, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Choisir une date de création</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>

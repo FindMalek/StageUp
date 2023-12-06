@@ -50,8 +50,6 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log(entreprise);
-
     return NextResponse.json(
       {
         entreprise: {
@@ -69,7 +67,6 @@ export async function POST(request: Request) {
       },
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       {
         user: null,

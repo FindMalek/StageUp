@@ -73,8 +73,8 @@ model Intern {
 
 model Degree {
   id String @id @default(cuid())
-
   internId     String
+  
   degreeName   String
   institution  String
   dateObtained DateTime
