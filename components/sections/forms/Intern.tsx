@@ -123,13 +123,9 @@ const formSchema = z.object({
 
 export default function InternForm(session: SessionType) {
   const [loading, setLoading] = useState(false);
-  const [degrees, setDegrees] = useState([
-    {
-      degreeName: "",
-      institution: "",
-      dateObtained: new Date(),
-    },
-  ]);
+  const [degrees, setDegrees] = useState<z.infer<typeof formSchema>["degrees"]>(
+    [],
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -283,6 +279,7 @@ export default function InternForm(session: SessionType) {
             </FormItem>
           )}
         />
+
         <div className="grid gap-4 lg:grid-cols-2 sm:grid-cols-1">
           <FormField
             control={form.control}
@@ -329,7 +326,7 @@ export default function InternForm(session: SessionType) {
           </div>
           <div className="relative flex items-center justify-between">
             <span className="bg-white pr-3 text-base font-semibold leading-6 text-gray-900">
-              Degree
+              Diplome
             </span>
             <Button
               type="button"
