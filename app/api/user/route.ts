@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         },
         {
           status: 409,
-        }
+        },
       );
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       },
       {
         status: 201,
-      }
+      },
     );
   } catch (error) {
     return NextResponse.json(
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
         },
         {
           status: 404,
-        }
+        },
       );
     }
 
@@ -94,7 +94,7 @@ export async function GET(request: Request) {
       },
       {
         status: 200,
-      }
+      },
     );
   } catch (error) {
     return NextResponse.json(
@@ -105,7 +105,68 @@ export async function GET(request: Request) {
       },
       {
         status: 500,
-      }
+      },
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, username, email, password } = body;
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!existingUser) {
+      return NextResponse.json(
+        {
+          user: null,
+          message: "L'utilisateur n'existe pas.",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+
+    const hashedPassword = await hash(password, 10);
+    const updatedUser = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name: username,
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        user: {
+          id: updatedUser.id,
+          name: updatedUser.name,
+          email: updatedUser.email,
+        },
+        message: "L'utilisateur a ete mis a jour avec succes.",
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        user: null,
+        message:
+          "Une erreur s'est produite lors de la mise a jour de l'utilisateur.",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }

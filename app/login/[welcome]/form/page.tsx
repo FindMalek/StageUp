@@ -30,7 +30,7 @@ export default async function Welcome() {
       </p>
 
       <div className="text-left pt-14 sm:col-span-2">
-        <EntityForm />
+        <EntityForm {...session.user}/>
       </div>
     </div>
   );

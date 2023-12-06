@@ -13,7 +13,9 @@ import { Label } from "@/components/ui/Label";
 import InternForm from "@/components/sections/forms/Intern";
 import EnterpriseForm from "@/components/sections/forms/Entreprise";
 
-export default function EntityForm() {
+import { SessionType } from "@/types/session";
+
+export default function EntityForm(session: SessionType) {
   const [selectedEntity, setSelectedEntity] = useState("");
 
   const handleSelectChange = (value: string) => {
@@ -31,13 +33,15 @@ export default function EntityForm() {
           />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="entreprise">S'inscrire en tant qu'entreprise</SelectItem>
+          <SelectItem value="entreprise">
+            S'inscrire en tant qu'entreprise
+          </SelectItem>
           <SelectItem value="intern">S'inscrire en tant qu'étudiant</SelectItem>
         </SelectContent>
       </Select>
 
-      {selectedEntity === "entreprise" && <EnterpriseForm />}
-      {selectedEntity === "intern" && <InternForm />}
+      {selectedEntity === "entreprise" && <EnterpriseForm {...session} />}
+      {selectedEntity === "intern" && <InternForm {...session} />}
     </>
   );
 }
