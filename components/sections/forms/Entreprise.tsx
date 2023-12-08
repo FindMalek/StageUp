@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { redirect } from "next/navigation";
 
 import {
   Form,
@@ -126,9 +127,10 @@ export default function EnterpriseForm(session: SessionType) {
         throw new Error(await res.text());
       }
 
-      // TODO: Redirect to /app
-
+      redirect("/applications");
+      
     } catch (error: any) {
+      console.log(error);
       toast({
         title: "Quelque chose s'est mal passé",
         description: error.message.split(":")[2],

@@ -43,6 +43,10 @@ export const authOptions: NextAuthOptions = {
 
         const existingUser = await prisma.user.findUnique({
           where: { email: credentials.email },
+          include: {
+            intern: true,
+            enterprise: true,
+          },
         });
 
         if (!existingUser || !existingUser.password) {
@@ -63,11 +67,35 @@ export const authOptions: NextAuthOptions = {
           name: existingUser.name,
           email: existingUser.email,
           image: existingUser.image,
+          isIntern: !!existingUser.intern,
+          isEnterprise: !!existingUser.enterprise,
         };
       },
     }),
   ],
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        // @ts-ignore: Only used for initial JWT generation
+        token.isIntern = !!user.intern;
+        // @ts-ignore: Only used for initial JWT generation
+        token.isEnterprise = !!user.entreprise;
+      } else if (token.sub) {
+        const existingUser = await prisma.user.findUnique({
+          where: { id: token.sub },
+          include: {
+            intern: true,
+            enterprise: true,
+          },
+        });
+
+        if (existingUser) {
+          token.isIntern = !!existingUser.intern;
+          token.isEnterprise = !!existingUser.enterprise;
+        }
+      }
+      return token;
+    },
     async session({ session, token }) {
       session.user = {
         // @ts-ignore: Randomly getting an error here, but it works.
@@ -75,6 +103,8 @@ export const authOptions: NextAuthOptions = {
         name: token.name,
         email: token.email,
         image: token.picture,
+        isIntern: token.isIntern,
+        isEnterprise: token.isEnterprise,
       };
       return session;
     },

@@ -14,21 +14,21 @@ export async function POST(request: Request) {
       companySize,
     } = body;
 
-    const existingEntreprise = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findUnique({
       where: {
         id: user.id,
       },
     });
 
-    if (existingEntreprise) {
+    if (!existingUser) {
       return NextResponse.json(
         {
           entreprise: null,
-          message: "L'entreprise existe déjà.",
+          message: "L'utilisateur n'existe pas.",
         },
         {
-          status: 409,
-        },
+          status: 404,
+        }
       );
     }
 
@@ -54,7 +54,8 @@ export async function POST(request: Request) {
           id: entreprise.id,
           companyName: entreprise.companyName,
           industry: entreprise.industry,
-          foundedDate: foundedDate instanceof Date ? foundedDate : new Date(foundedDate),
+          foundedDate:
+            foundedDate instanceof Date ? foundedDate : new Date(foundedDate),
           description: entreprise.description,
           websiteUrl: entreprise.websiteUrl,
         },
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
       },
       {
         status: 200,
-      },
+      }
     );
   } catch (error) {
     return NextResponse.json(
@@ -73,7 +74,7 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-      },
+      }
     );
   }
 }
