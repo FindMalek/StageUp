@@ -20,8 +20,6 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log(existingEntreprise);
-
     if (!existingEntreprise) {
       return NextResponse.json(
         {

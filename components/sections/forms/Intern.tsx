@@ -156,6 +156,10 @@ export default function InternForm(session: SessionType) {
         },
       };
 
+      // TODO: Create the Intern profile
+      // TODO: Create the Degrees for the Intern
+      // TODO: Direct the user to the search page
+
       console.log(userData);
     } catch (error) {
       console.error(error);
