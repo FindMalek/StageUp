@@ -30,11 +30,11 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         email: {
-          label: "Email",
+          label: "email",
           type: "text",
           placeholder: "email@example.com",
         },
-        password: { label: "Password", type: "password" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {

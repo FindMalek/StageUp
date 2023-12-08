@@ -7,6 +7,8 @@ import EntityForm from "@/components/sections/forms/Entity";
 
 export default async function Welcome() {
   const session = (await getServerSession(authOptions)) as any;
+  
+  console.log(session);
 
   if (!session) {
     return <AccessDenied />;

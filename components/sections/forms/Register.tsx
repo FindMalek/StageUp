@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { Loader2 } from "lucide-react";
@@ -61,9 +61,7 @@ export default function RegisterForm() {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        window.location.href = "/login/welcome/form";
-      } else {
+      if (!response.ok) {
         toast({
           title: "Connexion échouée.",
           // @ts-ignore: Object is possibly 'null'.
@@ -83,6 +81,13 @@ export default function RegisterForm() {
         const data = await response.json();
         throw new Error(data.message);
       }
+
+      await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      });
+
     } catch (error) {
       toast({
         title: "Une erreur s'est produite.",
@@ -120,7 +125,7 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="email"
