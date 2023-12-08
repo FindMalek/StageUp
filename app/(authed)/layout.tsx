@@ -6,7 +6,7 @@ import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/Toaster";
 import ProvidersLayout from "@/components/sections/authentification/ProviderLayout";
 
-import Header from "@/components/sections/navigation/Header";
+import Header from "@/components/sections/navigation/HeaderLanding";
 import Footer from "@/components/sections/navigation/Footer";
 
 export const metadata: Metadata = {
