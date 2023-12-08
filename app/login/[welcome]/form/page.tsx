@@ -7,6 +7,7 @@ import EntityForm from "@/components/sections/forms/Entity";
 export default async function Welcome() {
   const session = (await getServerSession(authOptions)) as any;
 
+  // TODO: Check if user has already filled the form (By checking if he is 'Intern' or 'Entreprise')
   if (!session) {
     return <AccessDenied />;
   }
@@ -30,7 +31,7 @@ export default async function Welcome() {
       </p>
 
       <div className="text-left pt-14 sm:col-span-2">
-        <EntityForm {...session.user}/>
+        <EntityForm {...session.user} />
       </div>
     </div>
   );

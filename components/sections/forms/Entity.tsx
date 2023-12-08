@@ -36,7 +36,9 @@ export default function EntityForm(session: SessionType) {
           <SelectItem value="entreprise">
             S'inscrire en tant qu'entreprise
           </SelectItem>
-          <SelectItem value="intern">S'inscrire en tant qu'étudiant</SelectItem>
+          <SelectItem value="intern">
+            S'inscrire en tant que stagiaire
+          </SelectItem>
         </SelectContent>
       </Select>
 

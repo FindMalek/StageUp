@@ -20,14 +20,14 @@ export async function POST(request: Request) {
       },
     });
 
-    if (!existingEntreprise) {
+    if (existingEntreprise) {
       return NextResponse.json(
         {
           entreprise: null,
-          message: "L'entreprise n'existe pas.",
+          message: "L'entreprise existe déjà.",
         },
         {
-          status: 404,
+          status: 409,
         },
       );
     }

@@ -56,25 +56,40 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Enterprise {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  description String
+  companyName String
+  industry    String
+  companySize String
+  foundedDate DateTime
+  websiteUrl  String?
+
+  internships Internship[]
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Intern {
   id     String @id @default(cuid())
   userId String @unique
 
-  overview     String?      @db.Text
+  overview     String?  @db.Text
   university   String
   fieldOfStudy String
   resumeUrl    String
   portfolioUrl String?
   degrees      Degree[]
 
-  internships  Internship[]
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  internships Internship[]
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Degree {
-  id String @id @default(cuid())
-  internId     String
-  
+  id       String @id @default(cuid())
+  internId String
+
   degreeName   String
   institution  String
   dateObtained DateTime
@@ -94,19 +109,4 @@ model Internship {
 
   intern     Intern?     @relation(fields: [internId], references: [id], onDelete: Cascade)
   enterprise Enterprise? @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
-}
-
-model Enterprise {
-  id     String @id @default(cuid())
-  userId String @unique
-
-  description String
-  companyName String
-  industry    String
-  companySize String
-  foundedDate DateTime
-  websiteUrl  String?
-
-  internships Internship[]
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

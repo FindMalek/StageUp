@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
 import {
@@ -36,6 +37,7 @@ import { Calendar } from "@/components/ui/Calendar";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
+import { ToastAction } from "@/components/ui/Toast";
 
 import PlusDivider from "@/components/overall/Divider";
 
@@ -82,11 +84,12 @@ const formSchema = z.object({
     .optional()
     .refine(
       (url) => !url || isValidUrl(url),
-      "L'URL du site web doit être une URL valide",
+      "L'URL du site web doit être une URL valide"
     ),
 });
 
 export default function EnterpriseForm(session: SessionType) {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -122,8 +125,25 @@ export default function EnterpriseForm(session: SessionType) {
       if (res.status !== 200) {
         throw new Error(await res.text());
       }
-    } catch (error) {
-      console.error(error);
+
+      // TODO: Redirect to /app
+
+    } catch (error: any) {
+      toast({
+        title: "Quelque chose s'est mal passé",
+        description: error.message.split(":")[2],
+        variant: "destructive",
+        action: (
+          <ToastAction
+            onClick={() => {
+              window.location.reload();
+            }}
+            altText="Try again"
+          >
+            Réessayer
+          </ToastAction>
+        ),
+      });
     } finally {
       setLoading(false);
     }
@@ -185,12 +205,12 @@ export default function EnterpriseForm(session: SessionType) {
                       role="combobox"
                       className={cn(
                         "w-full justify-between",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-muted-foreground"
                       )}
                     >
                       {field.value
                         ? industries.find(
-                            (industry) => industry.value === field.value,
+                            (industry) => industry.value === field.value
                           )?.label
                         : "Choisir un secteur d'activité"}
                       <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -215,7 +235,7 @@ export default function EnterpriseForm(session: SessionType) {
                               "mr-2 h-4 w-4",
                               industry.value === field.value
                                 ? "opacity-100"
-                                : "opacity-0",
+                                : "opacity-0"
                             )}
                           />
                           {industry.label}
@@ -275,7 +295,7 @@ export default function EnterpriseForm(session: SessionType) {
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
+                          !field.value && "text-muted-foreground"
                         )}
                       >
                         {field.value ? (

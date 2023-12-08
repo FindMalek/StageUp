@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
 import {
@@ -37,6 +38,7 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Calendar } from "@/components/ui/Calendar";
 import { Separator } from "@/components/ui/Separator";
+import { ToastAction } from "@/components/ui/Toast";
 
 import PlusDivider from "@/components/overall/Divider";
 
@@ -89,7 +91,7 @@ const formSchema = z.object({
     .optional()
     .refine(
       (url) => !url || isValidUrl(url),
-      "L'URL du votre siteweb doit être une URL valide",
+      "L'URL du votre siteweb doit être une URL valide"
     ),
   degrees: z.array(
     z
@@ -117,14 +119,15 @@ const formSchema = z.object({
           invalid_type_error: "La date de fondation doit être une date valide",
         }),
       })
-      .optional(),
+      .optional()
   ),
 });
 
 export default function InternForm(session: SessionType) {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [degrees, setDegrees] = useState<z.infer<typeof formSchema>["degrees"]>(
-    [],
+    []
   );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -148,7 +151,6 @@ export default function InternForm(session: SessionType) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      console.log(values);
       const userData = {
         ...values,
         user: {
@@ -156,13 +158,52 @@ export default function InternForm(session: SessionType) {
         },
       };
 
-      // TODO: Create the Intern profile
-      // TODO: Create the Degrees for the Intern
-      // TODO: Direct the user to the search page
+      const intern = await fetch("/api/intern", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-      console.log(userData);
-    } catch (error) {
-      console.error(error);
+      if (intern.status !== 200) {
+        throw new Error(await intern.text());
+      }
+
+      const internData = await intern.json();
+      const degrees = await fetch("/api/degree", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          intern: internData.intern,
+          degrees: userData.degrees,
+        }),
+      });
+
+      if (degrees.status !== 200) {
+        throw new Error(await degrees.text());
+      }
+
+      // TODO: Redirect to /app
+      
+    } catch (error: any) {
+      toast({
+        title: "Quelque chose s'est mal passé",
+        description: error.message.split(":")[1],
+        variant: "destructive",
+        action: (
+          <ToastAction
+            onClick={() => {
+              window.location.reload();
+            }}
+            altText="Try again"
+          >
+            Réessayer
+          </ToastAction>
+        ),
+      });
     } finally {
       setLoading(false);
     }
@@ -188,12 +229,12 @@ export default function InternForm(session: SessionType) {
                       role="combobox"
                       className={cn(
                         "w-full justify-between",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-muted-foreground"
                       )}
                     >
                       {field.value
                         ? universities.find(
-                            (university) => university.value === field.value,
+                            (university) => university.value === field.value
                           )?.value
                         : "Choisir votre université"}
                       <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -218,7 +259,7 @@ export default function InternForm(session: SessionType) {
                               "mr-2 h-4 w-4",
                               university.value === field.value
                                 ? "opacity-100"
-                                : "opacity-0",
+                                : "opacity-0"
                             )}
                           />
                           {university.value}
@@ -400,7 +441,7 @@ export default function InternForm(session: SessionType) {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground",
+                            !field.value && "text-muted-foreground"
                           )}
                         >
                           {field.value ? (

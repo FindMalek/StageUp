@@ -13,22 +13,20 @@ export async function POST(request: Request) {
             portfolioUrl,
         } = body;
 
-        const existingIntern = await prisma.intern.findUnique({
+        const existingIntern = await prisma.user.findUnique({
             where: {
                 id: user.id,
             },
         });
 
-        console.log(existingIntern);
-
         if (!existingIntern) {
             return NextResponse.json(
                 {
                     intern: null,
-                    message: "L'intern n'existe pas.",
+                    message: "L'intern existe déjà.",
                 },
                 {
-                    status: 404,
+                    status: 409,
                 },
             );
         }
@@ -65,7 +63,6 @@ export async function POST(request: Request) {
             },
         );
     } catch (error) {
-        console.log(error);
         return NextResponse.json(
             {
                 message: "Une erreur s'est produite lors de la création de l'intern.",
