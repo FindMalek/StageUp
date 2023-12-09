@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useToast } from "@hooks/use-toast";
 import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Loader2 } from "lucide-react";
@@ -44,7 +45,7 @@ export default function RegisterForm() {
   const { data: session } = useSession();
 
   if (session) {
-    window.location.href = "/login/welcome/form";
+    return redirect("/login/welcome/form");
   }
 
   const { toast } = useToast();

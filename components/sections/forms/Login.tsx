@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import Link from "next/link";
 import { useState } from "react";
+import { redirect } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 
 import { Loader2 } from "lucide-react";
@@ -36,7 +37,7 @@ export default function LoginForm() {
   const { data: session } = useSession();
 
   if (session) {
-    window.location.href = "/login/welcome/form";
+    return redirect("/login/welcome/form");
   }
 
   const [loading, setLoading] = useState(false);
