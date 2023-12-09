@@ -29,9 +29,15 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Veuillez saisir une adresse email valide.",
   }),
-  password: z.string().min(8, {
-    message: "Le mot de passe doit contenir au moins 8 caractères.",
-  }),
+  password: z
+    .string()
+    .min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères.",
+    })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/, {
+      message:
+        "Le mot de passe doit contenir au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+    }),
 });
 
 export default function RegisterForm() {
@@ -87,7 +93,6 @@ export default function RegisterForm() {
         email: values.email,
         password: values.password,
       });
-
     } catch (error) {
       toast({
         title: "Une erreur s'est produite.",

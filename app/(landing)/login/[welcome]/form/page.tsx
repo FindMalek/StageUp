@@ -7,13 +7,21 @@ import EntityForm from "@/components/sections/forms/Entity";
 
 export default async function Welcome() {
   const session = (await getServerSession(authOptions)) as any;
-  
+
   if (!session) {
-    return <AccessDenied />;
+    return (
+      <AccessDenied
+        statusCode={401}
+        title="Vous n'êtes pas connecté"
+        description="Vous devez être connecté pour accéder à cette page. Connectez-vous ou créez un compte."
+        button="Se connecter"
+        link="/login"
+      />
+    );
   }
 
   if (session.user.isIntern || session.user.isEnterprise) {
-    redirect("/applications");
+    return redirect("/applications");
   }
 
   const { user } = session;
