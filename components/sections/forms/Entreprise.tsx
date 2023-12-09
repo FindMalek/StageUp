@@ -126,7 +126,7 @@ export default function EnterpriseForm(session: SessionType) {
         throw new Error(await res.text());
       }
 
-      window.location.href = "/applications";
+      window.location.href = "/internships";
 
     } catch (error: any) {
       toast({

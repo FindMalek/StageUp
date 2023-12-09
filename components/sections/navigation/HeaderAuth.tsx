@@ -6,34 +6,28 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { cn } from "@/lib/utils";
 import { useSession, signOut } from "next-auth/react";
 
+import { HiMenu } from "react-icons/hi";
 import { FaMagnifyingGlass, FaXmark } from "react-icons/fa6";
-import { MenuIcon } from "@/components/icons/Navbar";
 import { FaBell } from "react-icons/fa";
+import Logo from "@/components/overall/Logo";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+  { name: "Internships", href: "/internships", current: true },
+  { name: "Applications", href: "/applications", current: false },
+  { name: "Tableau de Bord", href: "/dashboard", current: false },
+  { name: "Interviews", href: "/interviews", current: false },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Votre Profile", href: "/profile" },
+  { name: "Parametre", href: "/profile" },
+  { name: "Se Déconnecter", href: "#" },
 ];
 
 export default function Header() {
   const { data: session, status } = useSession();
 
   if (status === "loading" || !session || !session.user) {
-    // TODO: Add a loading spinner
+    // TODO: Add a skeleton loader
     return <p>Loading...</p>;
   }
 
@@ -51,11 +45,7 @@ export default function Header() {
                   <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
                     <div className="flex items-center px-2 lg:px-0">
                       <div className="flex-shrink-0">
-                        <img
-                          className="block h-8 w-8"
-                          src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=300"
-                          alt="Your Company"
-                        />
+                        <Logo className="h-8 w-8 " isLogo={false} />
                       </div>
                       <div className="hidden lg:ml-10 lg:block">
                         <div className="flex space-x-4">
@@ -109,7 +99,7 @@ export default function Header() {
                             aria-hidden="true"
                           />
                         ) : (
-                          <MenuIcon
+                          <HiMenu
                             className="block h-6 w-6"
                             aria-hidden="true"
                           />
@@ -133,8 +123,11 @@ export default function Header() {
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src={session.user?.image || undefined}
-                                alt=""
+                                src={
+                                  session.user?.image ||
+                                  "https://via.placeholder.com/150"
+                                }
+                                alt={session.user?.name || "User"}
                               />
                             </Menu.Button>
                           </div>
@@ -195,16 +188,19 @@ export default function Header() {
                       <div className="flex-shrink-0">
                         <img
                           className="h-10 w-10 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
+                          src={
+                            session.user?.image ||
+                            "https://via.placeholder.com/150"
+                          }
+                          alt={session.user?.name || "User"}
                         />
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium text-white">
-                          {user.name}
+                          {session.user?.name || "User"}
                         </div>
                         <div className="text-sm font-medium text-blue-300">
-                          {user.email}
+                          {session.user?.email || "email@example.com"}
                         </div>
                       </div>
                       <button

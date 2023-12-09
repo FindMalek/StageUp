@@ -18,7 +18,7 @@ export default async function Dashboard() {
     );
   }
 
-  if (!(session.user.isIntern && session.user.isEnterprise)) {
+  if (!session.user.isIntern && !session.user.isEnterprise) {
     return (
       <AccessDenied
         statusCode={403}

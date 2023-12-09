@@ -21,7 +21,7 @@ export default async function Welcome() {
   }
 
   if (session.user.isIntern || session.user.isEnterprise) {
-    return redirect("/applications");
+    return redirect("/internships");
   }
 
   const { user } = session;

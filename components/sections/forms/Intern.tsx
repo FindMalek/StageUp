@@ -186,7 +186,7 @@ export default function InternForm(session: SessionType) {
         throw new Error(await degrees.text());
       }
 
-      window.location.href = "/applications";
+      window.location.href = "/internships";
       
     } catch (error: any) {
       toast({
@@ -326,6 +326,9 @@ export default function InternForm(session: SessionType) {
         />
 
         <div className="grid gap-4 lg:grid-cols-2 sm:grid-cols-1">
+          {/**
+           * TODO: Add a way to upload a resume (Supabase Storage)
+           */}
           <FormField
             control={form.control}
             name="resumeUrl"
