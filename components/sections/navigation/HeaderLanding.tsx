@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Popover } from "@headlessui/react";
 
-import { Button } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import Logo from "@/components/overall/Logo";
 
