@@ -1,35 +1,46 @@
-"use client";
+'use client';
 
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from '@headlessui/react';
 
-import { cn } from "@/lib/utils";
-import { useSession, signOut } from "next-auth/react";
+import Link from 'next/link';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
-import { HiMenu } from "react-icons/hi";
-import { FaMagnifyingGlass, FaXmark } from "react-icons/fa6";
-import { FaBell } from "react-icons/fa";
-import Logo from "@/components/overall/Logo";
+import { HiMenu } from 'react-icons/hi';
+import { FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { FaBell } from 'react-icons/fa';
+import Logo from '@/components/overall/Logo';
+
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import UserDropdown from '@/components/overall/User';
+
+import { UserType } from '@/types/session';
 
 const navigation = [
-  { name: "Internships", href: "/internships", current: true },
-  { name: "Applications", href: "/applications", current: false },
-  { name: "Tableau de Bord", href: "/dashboard", current: false },
-  { name: "Interviews", href: "/interviews", current: false },
-];
-const userNavigation = [
-  { name: "Votre Profile", href: "/profile" },
-  { name: "Parametre", href: "/profile" },
-  { name: "Se Déconnecter", href: "#" },
+  { name: 'Stages', href: '/internships', current: false },
+  { name: 'Applications', href: '/applications', current: false },
+  { name: 'Tableau de Bord', href: '/dashboard', current: false },
+  { name: 'Interviews', href: '/interview', current: false }
 ];
 
-export default function Header() {
-  const { data: session, status } = useSession();
-
-  if (status === "loading" || !session || !session.user) {
-    // TODO: Add a skeleton loader
-    return <p>Loading...</p>;
-  }
+export default function Header(user: UserType) {
+  const pathname = usePathname();
+  const userNavigation = [
+    { name: 'Mon Profile', href: '/profile/' + user.id, onClick: () => {} },
+    { name: 'Parametre', href: '/profile', onClick: () => {} },
+    { name: 'Se Déconnecter', href: '/', onClick: () => signOut() }
+  ];
+  
+  navigation.map((item) => {
+    if (item.href === pathname) {
+      item.current = true;
+    } else {
+      item.current = false;
+    }
+  });
 
   return (
     <>
@@ -45,24 +56,26 @@ export default function Header() {
                   <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-blue-400 lg:border-opacity-25">
                     <div className="flex items-center px-2 lg:px-0">
                       <div className="flex-shrink-0">
-                        <Logo className="h-8 w-8 " isLogo={false} />
+                        <Link href="/applications" aria-label="Home">
+                          <Logo className="h-8 w-8" isLogo={false} />
+                        </Link>
                       </div>
                       <div className="hidden lg:ml-10 lg:block">
                         <div className="flex space-x-4">
                           {navigation.map((item) => (
-                            <a
+                            <Link
                               key={item.name}
                               href={item.href}
                               className={cn(
                                 item.current
-                                  ? "bg-blue-700 text-white"
-                                  : "text-white hover:bg-blue-500 hover:bg-opacity-75",
-                                "rounded-md py-2 px-3 text-sm font-medium",
+                                  ? 'bg-blue-700 text-white'
+                                  : 'text-white hover:bg-blue-500 hover:bg-opacity-75',
+                                'rounded-md px-3 py-2 text-sm font-medium'
                               )}
-                              aria-current={item.current ? "page" : undefined}
+                              aria-current={item.current ? 'page' : undefined}
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -70,7 +83,7 @@ export default function Header() {
                     <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
                       <div className="w-full max-w-lg lg:max-w-xs">
                         <label htmlFor="search" className="sr-only">
-                          Search
+                          Recherche
                         </label>
                         <div className="relative text-gray-400 focus-within:text-gray-600">
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -79,18 +92,18 @@ export default function Header() {
                               aria-hidden="true"
                             />
                           </div>
-                          <input
+                          <Input
                             id="search"
                             className="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 sm:text-sm sm:leading-6"
-                            placeholder="Search"
+                            placeholder="Rercherche..."
                             type="search"
                             name="search"
+                            autoComplete="off"
                           />
                         </div>
                       </div>
                     </div>
                     <div className="flex lg:hidden">
-                      {/* Mobile menu button */}
                       <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-blue-600 p-2 text-blue-200 hover:bg-blue-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
                         <span className="sr-only">Open main menu</span>
                         {open ? (
@@ -108,57 +121,17 @@ export default function Header() {
                     </div>
                     <div className="hidden lg:ml-4 lg:block">
                       <div className="flex items-center">
-                        <button
+                        <Button
                           type="button"
                           className="flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
                         >
                           <span className="sr-only">View notifications</span>
                           <FaBell className="h-6 w-6" aria-hidden="true" />
-                        </button>
+                        </Button>
 
-                        {/* Profile dropdown */}
-                        <Menu as="div" className="relative ml-3 flex-shrink-0">
-                          <div>
-                            <Menu.Button className="flex rounded-full bg-blue-600 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600">
-                              <span className="sr-only">Open user menu</span>
-                              <img
-                                className="h-8 w-8 rounded-full"
-                                src={
-                                  session.user?.image ||
-                                  "https://via.placeholder.com/150"
-                                }
-                                alt={session.user?.name || "User"}
-                              />
-                            </Menu.Button>
-                          </div>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              {userNavigation.map((item) => (
-                                <Menu.Item key={item.name}>
-                                  {({ active }) => (
-                                    <a
-                                      href={item.href}
-                                      className={cn(
-                                        active ? "bg-gray-100" : "",
-                                        "block px-4 py-2 text-sm text-gray-700",
-                                      )}
-                                    >
-                                      {item.name}
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                              ))}
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
+                        <div className="relative ml-3 flex-shrink-0">
+                          <UserDropdown {...user} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -169,54 +142,54 @@ export default function Header() {
                     {navigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
-                        as="a"
+                        as={Link}
                         href={item.href}
                         className={cn(
                           item.current
-                            ? "bg-blue-700 text-white"
-                            : "text-white hover:bg-blue-500 hover:bg-opacity-75",
-                          "block rounded-md py-2 px-3 text-base font-medium",
+                            ? 'bg-blue-700 text-white'
+                            : 'text-white hover:bg-blue-500 hover:bg-opacity-75',
+                          'block rounded-md px-3 py-2 text-base font-medium'
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
                       </Disclosure.Button>
                     ))}
                   </div>
-                  <div className="border-t border-blue-700 pb-3 pt-4">
+                  <div className="border-t border-blue-500 pb-3 pt-4">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
-                        <img
+                        <Image
                           className="h-10 w-10 rounded-full"
-                          src={
-                            session.user?.image ||
-                            "https://via.placeholder.com/150"
-                          }
-                          alt={session.user?.name || "User"}
+                          height={150}
+                          width={150}
+                          src={user.image || 'https://via.placeholder.com/150'}
+                          alt={user.name || 'User'}
                         />
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium text-white">
-                          {session.user?.name || "User"}
+                          {user.name || 'User'}
                         </div>
                         <div className="text-sm font-medium text-blue-300">
-                          {session.user?.email || "email@example.com"}
+                          {user.email || 'email@example.com'}
                         </div>
                       </div>
-                      <button
+                      <Button
                         type="button"
                         className="ml-auto flex-shrink-0 rounded-full bg-blue-600 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
                       >
                         <span className="sr-only">View notifications</span>
                         <FaBell className="h-6 w-6" aria-hidden="true" />
-                      </button>
+                      </Button>
                     </div>
                     <div className="mt-3 space-y-1 px-2">
                       {userNavigation.map((item) => (
                         <Disclosure.Button
                           key={item.name}
-                          as="a"
+                          as={Link}
                           href={item.href}
+                          onClick={item.onClick}
                           className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-blue-500 hover:bg-opacity-75"
                         >
                           {item.name}
@@ -231,17 +204,13 @@ export default function Header() {
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
-                Dashboard
+                {navigation.map((item) => (
+                  <span key={item.name}>{item.current ? item.name : ''}</span>
+                ))}
               </h1>
             </div>
           </header>
         </div>
-
-        <main className="-mt-32">
-          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            {JSON.stringify(session, null, 2)}
-          </div>
-        </main>
       </div>
     </>
   );

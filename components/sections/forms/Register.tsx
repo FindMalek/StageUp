@@ -9,6 +9,8 @@ import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
+import { SessionType } from "@/types/session";
+
 import { Loader2 } from "lucide-react";
 
 import {
@@ -42,11 +44,17 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm() {
-  const { data: session } = useSession();
+	const { data: session } = useSession() as SessionType;
 
-  if (session) {
-    return redirect("/login/welcome/form");
-  }
+	if (
+		session &&
+		session.user &&
+		(session.user.isIntern || session.user.isEnterprise)
+	) {
+		return redirect("/internships");
+	} else if (session && session.user) {
+		return redirect("/login/welcome/form");
+	}
 
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
