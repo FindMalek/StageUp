@@ -76,13 +76,13 @@ export default function NewInternshipForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      positionTitle: 'Développeur web',
-      description: 'Développeur web',
-      location: 'Monastir',
-      duration: '2',
+      positionTitle: '',
+      description: '',
+      location: '',
+      duration: '',
       documentationFileUrl: '',
-      questions: ['Quelle est la question ?'],
-      keywords: ['React', 'Node.js', 'TypeScript']
+      questions: [],
+      keywords: []
     }
   });
 
