@@ -3,8 +3,10 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+
 import { useToast } from '@/hooks/use-toast';
+import { uploadFile } from '@/lib/storage';
 
 import {
   Form,
@@ -49,7 +51,7 @@ const formSchema = z.object({
       invalid_type_error: 'La durée doit être une chaîne de caractères'
     })
     .nonempty('La durée ne peut pas être vide'),
-  documentationFileUrl: z.string(),
+  documentationFileUrl: z.string().optional(),
   questions: z
     .array(
       z.string({
@@ -59,12 +61,11 @@ const formSchema = z.object({
     )
     .nonempty('Vous devez ajouter au moins une question'),
   keywords: z
-    .array(
-      z.string({
-        required_error: 'Le mot-clé est requis',
-        invalid_type_error: 'Le mot-clé doit être une chaîne de caractères'
-      })
-    )
+    .string({
+      required_error: 'Le mot-clé est requis',
+      invalid_type_error: 'Le mot-clé doit être une chaîne de caractères'
+    })
+
     .nonempty('Vous devez ajouter au moins un mot-clé')
 });
 
@@ -76,15 +77,21 @@ export default function NewInternshipForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      positionTitle: '',
-      description: '',
-      location: '',
-      duration: '',
+      positionTitle: 'again',
+      description: 'ajout',
+      location: 'action',
+      duration: '2',
       documentationFileUrl: '',
-      questions: [],
-      keywords: []
+      questions: ['fsdfs'],
+      keywords: ''
     }
   });
+
+  const [documentFile, setDocumentFile] = useState<File>();
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    setDocumentFile(selectedFile);
+  };
 
   const handleAddQuestion = () => {
     if (questions.length < MAX_QUESTIONS) {
@@ -107,6 +114,62 @@ export default function NewInternshipForm() {
       if (res.status !== 201) {
         throw new Error(await res.text());
       }
+
+      const id = (await res.json()).internship.id;
+
+      if (documentFile) {
+        try {
+          values.documentationFileUrl = await uploadFile(
+            documentFile,
+            `/internships/${id}/documentation.pdf`
+          );
+
+          const resFile = await fetch('/api/internship', {
+            method: 'PUT',
+            body: JSON.stringify({ ...values, id }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          if (resFile.status !== 201) {
+            throw new Error(await resFile.text());
+          }
+        } catch (error: any) {
+          toast({
+            title: "Fichier de documentation n'a pas été téléchargé",
+            description: error.message.split(':')[2],
+            variant: 'destructive',
+            action: (
+              <ToastAction
+                onClick={() => {
+                  window.location.reload();
+                }}
+                altText="Try again"
+              >
+                Réessayer
+              </ToastAction>
+            )
+          });
+        }
+      }
+
+      const resQuestions = await fetch('/api/question', {
+        method: 'POST',
+        body: JSON.stringify({
+          questions: Object.values(values.questions),
+          internshipId: id
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (resQuestions.status !== 200) {
+        throw new Error(await resQuestions.text());
+      }
+
+      // TODO: Send an email to the student with the internship details
+      // List of mails are from the intern table and from the subscribe
 
       window.location.reload();
     } catch (error: any) {
@@ -134,7 +197,7 @@ export default function NewInternshipForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 overflow-y-auto sm:h-[500px] lg:h-[600px]"
+        className="space-y-4 overflow-y-auto px-4 sm:h-[500px] lg:h-[600px]"
       >
         <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
           <FormField
@@ -185,7 +248,12 @@ export default function NewInternshipForm() {
               <FormItem>
                 <FormLabel>Fichier de documentation</FormLabel>
                 <FormControl>
-                  <Input id="documentationFileUrl" type="file" {...field} />
+                  <Input
+                    id="documentationFileUrl"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    type="file"
+                  />
                 </FormControl>
                 <FormDescription>
                   Le fichier de documentation doit être un fichier PDF.
@@ -211,9 +279,6 @@ export default function NewInternshipForm() {
                     </div>
                   </div>
                 </FormControl>
-                {/**
-                 * Either show the FormMessage or the FormDescription
-                 */}
                 <FormDescription>La durée du stage en mois.</FormDescription>
                 <FormMessage />
               </FormItem>

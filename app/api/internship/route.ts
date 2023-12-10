@@ -82,3 +82,115 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const internships = await prisma.internship.findMany({
+      include: {
+        enterprise: true,
+        feedbacks: true,
+        questions: true
+      }
+    });
+
+    return NextResponse.json(
+      {
+        internships: internships || [],
+        message: 'Les stages ont été récupérés avec succès.'
+      },
+      {
+        status: 200
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        internships: null,
+        message: 'Une erreur est survenue lors de la récupération des stages.'
+      },
+      {
+        status: 500
+      }
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  const session = (await getServerSession(authOptions)) as any;
+  const enterpriseUser = session?.user;
+
+  try {
+    const body = await request.json();
+    const {
+      id,
+      positionTitle,
+      description,
+      location,
+      duration,
+      documentationFileUrl,
+      keywords
+    } = body;
+
+    const existingEnterprise = await prisma.enterprise.findUnique({
+      where: {
+        userId: enterpriseUser.id
+      }
+    });
+
+    if (!existingEnterprise) {
+      return NextResponse.json(
+        {
+          internship: null,
+          message: "L'entreprise n'existe pas."
+        },
+        {
+          status: 404
+        }
+      );
+    }
+
+    const internship = await prisma.internship.update({
+      where: {
+        id
+      },
+      data: {
+        positionTitle,
+        description,
+        location,
+        duration,
+        documentationFileUrl,
+        keywords
+      }
+    });
+
+    return NextResponse.json(
+      {
+        internship: {
+          id: internship.id,
+          positionTitle: internship.positionTitle,
+          description: internship.description,
+          location: internship.location,
+          duration: internship.duration,
+          documentationFileUrl: internship.documentationFileUrl,
+          keywords: internship.keywords
+        },
+        message: 'Le stage a été modifié avec succès.'
+      },
+      {
+        status: 201
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        internship: null,
+        message: 'Une erreur est survenue lors de la modification du stage.'
+      },
+      {
+        status: 500
+      }
+    );
+  }
+}

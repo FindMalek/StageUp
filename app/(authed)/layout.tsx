@@ -71,7 +71,7 @@ export default async function AuthLayout({
         <ProvidersLayout>
           <Header {...session.user} />
 
-          <main className="-mt-32">
+          <main className="-mt-40">
             <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
               {children}
             </div>

@@ -111,7 +111,7 @@ model Internship {
   documentationFileUrl String?
 
   questions Question[]
-  keywords  String[]
+  keywords  String
 
   feedbacks Feedback[]
 
