@@ -108,8 +108,7 @@ model Internship {
   description          String
   location             String
   duration             String
-  domains              String[]
-  documentationFileUrl String
+  documentationFileUrl String?
 
   questions Question[]
   keywords  String[]

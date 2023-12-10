@@ -6,7 +6,6 @@ export type InternshipType = {
   description: string;
   location: string;
   duration: string;
-  domains: string[];
   documentationFileUrl: string;
   questions: QuestionType[];
   keywords: string[];

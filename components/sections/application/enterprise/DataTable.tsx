@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
 
 import {
   ColumnDef,
@@ -26,7 +25,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-import { Plus } from 'lucide-react';
+import { DialogNewInternship } from '@/components/sections/application/enterprise/DialogNewInternship';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -78,16 +77,8 @@ export function DataTable<TData, TValue>({
             className="max-w-sm"
           />
         </div>
-        <Link href="/applications/new-internship">
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-auto hidden h-8 lg:flex"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Ajouter un stage
-          </Button>
-        </Link>
+
+        <DialogNewInternship />
       </div>
       <div className="rounded-md border bg-white">
         <Table>

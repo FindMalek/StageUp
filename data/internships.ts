@@ -7,9 +7,7 @@ export const internships = [
     description: "Développement d'une application web de gestion de stock",
     location: 'Paris',
     duration: '3 mois',
-    domains: ['Web', 'Front-end', 'Back-end', 'Full-stack', 'Mobile'],
     documentationFileUrl: 'https://www.google.com',
-
     questions: [
       {
         id: '1',
@@ -73,7 +71,6 @@ export const internships = [
     description: "Conception et développement de logiciels d'entreprise",
     location: 'Lyon',
     duration: '6 mois',
-    domains: ['Logiciel', 'Java', 'C#', 'Python', 'DevOps'],
     documentationFileUrl: 'https://www.example.com',
 
     questions: [
@@ -138,7 +135,6 @@ export const internships = [
     description: 'Analyse des tendances du marché et extraction de données',
     location: 'Marseille',
     duration: '4 mois',
-    domains: ['Data Analysis', 'Python', 'SQL', 'Machine Learning'],
     documentationFileUrl: 'https://www.exampledata.com',
 
     questions: [
@@ -201,12 +197,6 @@ export const internships = [
     description: 'Gestion de campagnes publicitaires en ligne et analyse SEO',
     location: 'Nice',
     duration: '5 mois',
-    domains: [
-      'Marketing Digital',
-      'SEO',
-      'Google Ads',
-      'Analyse des Réseaux Sociaux'
-    ],
     documentationFileUrl: 'https://www.marketingexample.com',
 
     questions: [
