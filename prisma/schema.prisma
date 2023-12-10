@@ -82,6 +82,7 @@ model Intern {
   portfolioUrl String?
   degrees      Degree[]
 
+  feedbacks   Feedback[]
   internships Internship[]
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -109,10 +110,35 @@ model Internship {
   domains              String[]
   documentationFileUrl String
 
-  questions     String[]
-  keywords      String[]
-  feedbackStars Int      @default(0)
+  questions Question[]
+  keywords  String[]
+
+  feedbacks Feedback[]
+
+  createdAt DateTime @default(now())
 
   intern     Intern?     @relation(fields: [internId], references: [id], onDelete: Cascade)
   enterprise Enterprise? @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
+}
+
+model Question {
+  id           String @id @default(cuid())
+  internshipId String
+
+  question String
+  required Boolean @default(false)
+
+  internship Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id           String @id @default(cuid())
+  internId     String
+  internshipId String
+
+  comment String
+  rating  Int    @default(0)
+
+  intern     Intern     @relation(fields: [internId], references: [id], onDelete: Cascade)
+  internship Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
 }
