@@ -13,6 +13,16 @@ const Star = ({ selected = false, onClick = () => {} }) => (
   </span>
 );
 
+export const StarRatingCustom = ({ totalStars = 5, selectedStars = 0 }) => {
+  return (
+    <div className="flex items-center space-x-1 py-3">
+      {[...Array(totalStars)].map((n, i) => (
+        <Star key={i} selected={i < selectedStars} />
+      ))}
+    </div>
+  );
+}
+
 export const StarRating = ({ totalStars = 5 }) => {
   const [selectedStars, setSelectedStars] = useState(0);
 

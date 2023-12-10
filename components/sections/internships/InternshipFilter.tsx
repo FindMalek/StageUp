@@ -31,14 +31,19 @@ export default function InternshipsFilter({
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <form className="hidden lg:block">
+              <aside className="hidden lg:block">
                 <h3 className="pb-8 text-lg font-medium text-gray-900">
                   Filtres généraux
                 </h3>
 
                 {filters.map((section) => (
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem key={section.id} value={section.id}>
+                  <Accordion
+                    key={section.id}
+                    type="single"
+                    collapsible
+                    className="w-full"
+                  >
+                    <AccordionItem value={section.id}>
                       <AccordionTrigger>{section.name}</AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-4">
@@ -69,11 +74,9 @@ export default function InternshipsFilter({
                 ))}
 
                 <StarRating totalStars={5} />
-              </form>
+              </aside>
 
-              <Container>
-                {children}
-              </Container>
+              <section className="col-span-3 sm:px-4">{children}</section>
             </div>
           </section>
         </main>

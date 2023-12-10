@@ -7,6 +7,7 @@ export async function POST(request: Request) {
     const {
       user,
       companyName,
+      imageUrl,
       industry,
       foundedDate,
       description,
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
       data: {
         companyName,
         industry,
+        imageUrl: imageUrl || "https://placehold.co/400x400",
         foundedDate,
         description,
         websiteUrl,

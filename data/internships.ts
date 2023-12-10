@@ -1,27 +1,33 @@
 export const internships = [
   {
-    id: 1,
-    entrepriseId: 1,
+    id: '1',
+    enterpriseId: '1',
+    internId: '1',
     positionTitle: 'Développeur web',
     description: "Développement d'une application web de gestion de stock",
     location: 'Paris',
     duration: '3 mois',
     domains: ['Web', 'Front-end', 'Back-end', 'Full-stack', 'Mobile'],
-    documentationUrl: 'https://www.google.com',
+    documentationFileUrl: 'https://www.google.com',
 
     questions: [
       {
-        id: 1,
+        id: '1',
+        enterpriseId: '1',
         question: 'Quelles sont vos motivations ?',
         required: true
       },
       {
-        id: 2,
+        id: '2',
+        enterpriseId: '1',
+
         question: 'Quelles sont vos compétences ?',
         required: true
       },
       {
-        id: 3,
+        id: '3',
+        enterpriseId: '1',
+
         question: 'Quelles sont vos disponibilités ?',
         required: true
       }
@@ -30,45 +36,64 @@ export const internships = [
 
     feedbacks: [
       {
-        id: 1,
-        internId: 1,
-        internshipId: 1,
+        id: '1',
+        internId: '1',
+        internshipId: '1',
         comment: 'Très bon étudiant',
-        rating: 5
+        rating: 4
       },
       {
-        id: 2,
-        internId: 2,
-        internshipId: 1,
+        id: '1',
+        internId: '1',
+        internshipId: '1',
         comment: 'Bon étudiant',
-        rating: 4
+        rating: 3
       }
     ],
+
+    enterprise: {
+      id: '1',
+      userId: '1',
+      imageUrl: 'https://placehold.co/400x400',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet.',
+      companyName: 'Entreprise 1',
+      industry: 'Informatique',
+      companySize: '10-50',
+      foundedDate: new Date(),
+      websiteUrl: 'https://www.example.com'
+    },
     createdAt: new Date()
   },
   {
-    id: 2,
-    entrepriseId: 2,
+    id: '1',
+    enterpriseId: '1',
+    internId: '1',
     positionTitle: 'Ingénieur logiciel',
     description: "Conception et développement de logiciels d'entreprise",
     location: 'Lyon',
     duration: '6 mois',
     domains: ['Logiciel', 'Java', 'C#', 'Python', 'DevOps'],
-    documentationUrl: 'https://www.example.com',
+    documentationFileUrl: 'https://www.example.com',
 
     questions: [
       {
-        id: 4,
+        id: '4',
+        enterpriseId: '1',
+
         question: 'Quelle est votre expérience en développement logiciel ?',
         required: true
       },
       {
-        id: 5,
+        id: '5',
+        enterpriseId: '1',
+
         question: 'Quels langages de programmation connaissez-vous ?',
         required: true
       },
       {
-        id: 6,
+        id: '6',
+        enterpriseId: '1',
         question: 'Pouvez-vous travailler en équipe ?',
         required: true
       }
@@ -77,20 +102,164 @@ export const internships = [
 
     feedbacks: [
       {
-        id: 3,
-        internId: 3,
-        internshipId: 2,
+        id: '1',
+        internId: '1',
+        internshipId: '1',
         comment: 'Excellent travail et esprit d’équipe',
         rating: 5
       },
       {
-        id: 4,
-        internId: 4,
-        internshipId: 2,
+        id: '1',
+        internId: '1',
+        internshipId: '1',
         comment: 'Très engagé et créatif',
         rating: 4
       }
     ],
+    enterprise: {
+      id: '1',
+      userId: '1',
+      imageUrl: 'https://placehold.co/400x400',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet.',
+      companyName: 'Entreprise 1',
+      industry: 'Informatique',
+      companySize: '10-50',
+      foundedDate: new Date(),
+      websiteUrl: 'https://www.example.com'
+    },
+    createdAt: new Date()
+  },
+  {
+    id: '2',
+    enterpriseId: '2',
+    internId: '2',
+    positionTitle: 'Analyste de données',
+    description: 'Analyse des tendances du marché et extraction de données',
+    location: 'Marseille',
+    duration: '4 mois',
+    domains: ['Data Analysis', 'Python', 'SQL', 'Machine Learning'],
+    documentationFileUrl: 'https://www.exampledata.com',
+
+    questions: [
+      {
+        id: '7',
+        enterpriseId: '2',
+        question: 'Avez-vous de l’expérience avec Python et SQL ?',
+        required: true
+      },
+      {
+        id: '8',
+        enterpriseId: '2',
+        question: 'Comment gérez-vous les gros volumes de données ?',
+        required: true
+      },
+      {
+        id: '9',
+        enterpriseId: '2',
+        question: 'Quels outils d’analyse de données connaissez-vous ?',
+        required: true
+      }
+    ],
+    keywords: ['Data', 'Python', 'SQL', 'Analytics'],
+
+    feedbacks: [
+      {
+        id: '3',
+        internId: '2',
+        internshipId: '2',
+        comment: 'Capacité d’analyse impressionnante',
+        rating: 1
+      },
+      {
+        id: '4',
+        internId: '3',
+        internshipId: '2',
+        comment: 'Excellente maîtrise des outils de données',
+        rating: 2
+      }
+    ],
+    enterprise: {
+      id: '1',
+      userId: '1',
+      imageUrl: 'https://placehold.co/400x400',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet.',
+      companyName: 'Entreprise 1',
+      industry: 'Informatique',
+      companySize: '10-50',
+      foundedDate: new Date(),
+      websiteUrl: 'https://www.example.com'
+    },
+    createdAt: new Date()
+  },
+  {
+    id: '3',
+    enterpriseId: '3',
+    internId: '3',
+    positionTitle: 'Stage en Marketing Digital',
+    description: 'Gestion de campagnes publicitaires en ligne et analyse SEO',
+    location: 'Nice',
+    duration: '5 mois',
+    domains: [
+      'Marketing Digital',
+      'SEO',
+      'Google Ads',
+      'Analyse des Réseaux Sociaux'
+    ],
+    documentationFileUrl: 'https://www.marketingexample.com',
+
+    questions: [
+      {
+        id: '10',
+        enterpriseId: '3',
+        question: 'Avez-vous une expérience en marketing digital ?',
+        required: true
+      },
+      {
+        id: '11',
+        enterpriseId: '3',
+        question: 'Quelle est votre compréhension du SEO et du SEM ?',
+        required: true
+      },
+      {
+        id: '12',
+        enterpriseId: '3',
+        question:
+          'Comment évaluez-vous le succès d’une campagne publicitaire ?',
+        required: true
+      }
+    ],
+    keywords: ['Marketing', 'SEO', 'SEM', 'Publicité'],
+
+    feedbacks: [
+      {
+        id: '5',
+        internId: '4',
+        internshipId: '3',
+        comment: 'Très créatif et innovant dans les stratégies de marketing',
+        rating: 5
+      },
+      {
+        id: '6',
+        internId: '5',
+        internshipId: '3',
+        comment: 'Approche excellente de l’analyse de marché',
+        rating: 4
+      }
+    ],
+    enterprise: {
+      id: '1',
+      userId: '1',
+      imageUrl: 'https://placehold.co/400x400',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet.',
+      companyName: 'Entreprise 1',
+      industry: 'Informatique',
+      companySize: '10-50',
+      foundedDate: new Date(),
+      websiteUrl: 'https://www.example.com'
+    },
     createdAt: new Date()
   }
 ];

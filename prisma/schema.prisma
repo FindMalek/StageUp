@@ -60,6 +60,7 @@ model Enterprise {
   id     String @id @default(cuid())
   userId String @unique
 
+  imageUrl    String
   description String
   companyName String
   industry    String
