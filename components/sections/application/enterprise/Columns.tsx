@@ -63,7 +63,7 @@ export const columns: ColumnDef<Internship>[] = [
       return (
         <Link
           target="_blank"
-          href={row.original.documentationFileUrl}
+          href={`${row.original.documentationFileUrl}/`}
           className="hover:underline"
         >
           Fichier de documentation
