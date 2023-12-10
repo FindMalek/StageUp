@@ -102,10 +102,16 @@ model Internship {
   internId     String?
   enterpriseId String?
 
-  title       String
-  description String    @db.Text
-  startDate   DateTime
-  endDate     DateTime?
+  positionTitle        String
+  description          String
+  location             String
+  duration             String
+  domains              String[]
+  documentationFileUrl String
+
+  questions     String[]
+  keywords      String[]
+  feedbackStars Int      @default(0)
 
   intern     Intern?     @relation(fields: [internId], references: [id], onDelete: Cascade)
   enterprise Enterprise? @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
