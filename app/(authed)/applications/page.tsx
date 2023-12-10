@@ -1,8 +1,12 @@
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
+import { DataTable } from '@/components/sections/application/enterprise/DataTable';
+import { columns } from '@/components/sections/application/enterprise/Columns';
 
-export default async function Applications() {
-  const session = (await getServerSession(authOptions)) as any;
+import { internships } from '@/data/internships';
 
-  return <>https://excalidraw.com/</>;
+export default function Applications() {
+  return (
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={internships} />
+    </div>
+  );
 }
