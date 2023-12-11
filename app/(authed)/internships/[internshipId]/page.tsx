@@ -7,11 +7,12 @@ async function getInternship(internshipId: string) {
   const url = getUrl();
   try {
     const response = await fetch(
-      `${url}/api/internship?getType=GETONE&internshipId=${internshipId}`,
+      `${url}/api/internship?getType=GETONE&internshipId=${internshipId}&cacheBuster=${new Date().getTime()}`,
       {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache'
         }
       }
     );

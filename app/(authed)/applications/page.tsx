@@ -10,10 +10,11 @@ import { columns } from '@/components/sections/application/enterprise/Columns';
 
 async function getInternships(userId: string) {
   const url = getUrl();
-  const response = await fetch(`${url}/api/internship?getType=GETBYENTERPRISE?userId=${userId}`, {
+  const response = await fetch(`${url}/api/internship?getType=GETBYENTERPRISE&userId=${userId}&cacheBuster=${new Date().getTime()}`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
     }
   });
 

@@ -8,10 +8,11 @@ import InternshipsFilter from '@/components/sections/internships/InternshipFilte
 
 async function getInternships() {
   const url = getUrl();
-  const response = await fetch(`${url}/api/internship?getType=GETALL`, {
+  const response = await fetch(`${url}/api/internship?getType=GETALL&cacheBuster=${new Date().getTime()}`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
     }
   });
 
