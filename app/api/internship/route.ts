@@ -85,101 +85,276 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const userId = url.searchParams.get('userId');
+  // This is an example of the 'url' module.
+  // ?getType=GETALL
+  // ?getType=GETONE?internshipId=${internshipId}
+  // ?getType=GETBYENTERPRISE?userId=${userId}
+  // ?getType=GETBYINTERN?userId=${userId}
+  
+  const getType = url.searchParams.get('getType')?.toString().split('?')[0];
 
-  if (userId) {
-    try {
-      if (!userId) {
-        return NextResponse.json(
-          {
-            message: "L'identifiant de l'user est manquant.",
-            enterprise: null
-          },
-          {
-            status: 400
-          }
-        );
+  if (!getType) {
+    return NextResponse.json(
+      {
+        message: 'Le type de requête est manquant.',
+        internship: null
+      },
+      {
+        status: 400
       }
-
-      const enterpriseEntity = await prisma.enterprise.findUnique({
-        where: {
-          userId
-        }
-      });
-
-      if (!enterpriseEntity) {
-        return NextResponse.json(
-          {
-            message: "L'entreprise n'existe pas.",
-            enterprise: null
-          },
-          {
-            status: 404
-          }
-        );
-      }
-
-      const internships = await prisma.internship.findMany({
-        where: {
-          enterpriseId: enterpriseEntity.id
-        },
-        include: {
-          enterprise: true,
-          feedbacks: true,
-          questions: true
-        }
-      });
-
+    );
+  }
+  console.log(getType);
+  switch (getType) {
+    case 'GETALL':
+      return await GETALL(request);
+    case 'GETONE':
+      return await GETONE(request);
+    case 'GETBYENTERPRISE':
+      return await GETBYENTERPRISE(request);
+    case 'GETBYINTERN':
+      return await GETBYINTERN(request);
+    default:
       return NextResponse.json(
         {
-          internships,
-          message: 'Les stages ont été récupérés avec succès.'
+          message: "Le type de requête n'est pas valide.",
+          internship: null
         },
         {
-          status: 200
+          status: 400
         }
       );
-    } catch (error) {
+  }
+}
+
+export async function GETALL(request: Request) {
+  try {
+    const internships = await prisma.internship.findMany({
+      include: {
+        enterprise: true,
+        feedbacks: true,
+        questions: true
+      }
+    });
+
+    return NextResponse.json(
+      {
+        internships,
+        message: 'Les stages ont été récupérés avec succès.'
+      },
+      {
+        status: 200
+      }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        internships: null,
+        message: 'Une erreur est survenue lors de la récupération des stages.'
+      },
+      {
+        status: 500
+      }
+    );
+  }
+}
+
+export async function GETONE(request: Request) {
+  const url = new URL(request.url);
+  const internshipId = url.search.split('?')[2].split('=')[1];
+
+  if (!internshipId) {
+    return NextResponse.json(
+      {
+        message: "L'identifiant du stage est manquant.",
+        internship: null
+      },
+      {
+        status: 400
+      }
+    );
+  }
+
+  try {
+    const internship = await prisma.internship.findUnique({
+      where: {
+        id: internshipId
+      },
+      include: {
+        enterprise: true,
+        feedbacks: true,
+        questions: true
+      }
+    });
+
+    if (!internship) {
       return NextResponse.json(
         {
-          internships: null,
-          message: 'Une erreur est survenue lors de la récupération des stages.'
+          message: "Le stage n'existe pas.",
+          internship: null
         },
         {
-          status: 500
+          status: 404
         }
       );
     }
-  } else {
-    try {
-      const internships = await prisma.internship.findMany({
-        include: {
-          enterprise: true,
-          feedbacks: true,
-          questions: true
-        }
-      });
 
-      return NextResponse.json(
-        {
-          internships,
-          message: 'Les stages ont été récupérés avec succès.'
-        },
-        {
-          status: 200
-        }
-      );
-    } catch (error) {
-      return NextResponse.json(
-        {
-          internships: null,
-          message: 'Une erreur est survenue lors de la récupération des stages.'
-        },
-        {
-          status: 500
-        }
-      );
+    return NextResponse.json(
+      {
+        internship,
+        message: 'Le stage a été récupéré avec succès.'
+      },
+      {
+        status: 200
+      }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        internship: null,
+        message: 'Une erreur est survenue lors de la récupération du stage.'
+      },
+      {
+        status: 500
+      }
+    );
+  }
+}
+
+async function GETBYENTERPRISE(request: Request) {
+  const url = new URL(request.url);
+  const userId = url.search.split('?')[2].split('=')[1];
+
+  if (!userId) {
+    return NextResponse.json(
+      {
+        message: "L'identifiant de l'user est manquant.",
+        enterprise: null
+      },
+      {
+        status: 400
+      }
+    );
+  }
+
+  const enterpriseEntity = await prisma.enterprise.findUnique({
+    where: {
+      userId
     }
+  });
+  console.log(enterpriseEntity);
+
+  if (!enterpriseEntity) {
+    return NextResponse.json(
+      {
+        message: "L'entreprise n'existe pas.",
+        enterprise: null
+      },
+      {
+        status: 404
+      }
+    );
+  }
+
+  try {
+    const internships = await prisma.internship.findMany({
+      where: {
+        enterpriseId: enterpriseEntity.id
+      },
+      include: {
+        enterprise: true,
+        feedbacks: true,
+        questions: true
+      }
+    });
+
+    return NextResponse.json(
+      {
+        internships,
+        message: 'Les stages ont été récupérés avec succès.'
+      },
+      {
+        status: 200
+      }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        internships: null,
+        message: 'Une erreur est survenue lors de la récupération des stages.'
+      },
+      {
+        status: 500
+      }
+    );
+  }
+}
+
+export async function GETBYINTERN(request: Request) {
+  const url = new URL(request.url);
+  const userId = url.search.split('?')[2].split('=')[1];
+
+  if (!userId) {
+    return NextResponse.json(
+      {
+        message: "L'identifiant de l'user est manquant.",
+        enterprise: null
+      },
+      {
+        status: 400
+      }
+    );
+  }
+
+  const internEntity = await prisma.intern.findUnique({
+    where: {
+      userId
+    }
+  });
+
+  if (!internEntity) {
+    return NextResponse.json(
+      {
+        message: "L'entreprise n'existe pas.",
+        enterprise: null
+      },
+      {
+        status: 404
+      }
+    );
+  }
+
+  try {
+    const internships = await prisma.internship.findMany({
+      where: {
+        internId: internEntity.id
+      },
+      include: {
+        enterprise: true,
+        feedbacks: true,
+        questions: true
+      }
+    });
+
+    return NextResponse.json(
+      {
+        internships,
+        message: 'Les stages ont été récupérés avec succès.'
+      },
+      {
+        status: 200
+      }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        internships: null,
+        message: 'Une erreur est survenue lors de la récupération des stages.'
+      },
+      {
+        status: 500
+      }
+    );
   }
 }
 

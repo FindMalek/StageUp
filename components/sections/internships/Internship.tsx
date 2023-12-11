@@ -34,8 +34,9 @@ export default function InternshipCard({
               </div>
 
               <div className="mt-6 sm:ml-6 sm:mt-0">
-                <h3 className="text-base font-medium text-gray-900">
-                  {internship.positionTitle}
+                <h3 className="text-lg font-medium text-gray-900">
+                  {internship.positionTitle} -{' '}
+                  {internship.enterprise.companyName}
                 </h3>
                 <p className="mt-2 text-sm font-medium text-gray-900">
                   {internship.location}
