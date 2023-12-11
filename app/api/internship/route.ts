@@ -92,7 +92,7 @@ export async function GET(request: Request) {
   // ?getType=GETBYINTERN?userId=${userId}
 
   const getType = url.searchParams.get('getType')?.toString().split('?')[0];
-
+  console.log(url, getType);
   if (!getType) {
     return NextResponse.json(
       {
@@ -162,6 +162,8 @@ async function GETALL(request: Request) {
 async function GETONE(request: Request) {
   const url = new URL(request.url);
   const internshipId = url.search.split('?')[2].split('=')[1];
+  console.log(internshipId);
+
 
   if (!internshipId) {
     return NextResponse.json(
