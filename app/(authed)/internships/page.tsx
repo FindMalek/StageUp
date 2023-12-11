@@ -1,55 +1,40 @@
-"use client";
+import { Internship } from '@prisma/client';
 
-import React, { useState, useEffect } from "react";
+import { getUrl } from '@/lib/utils';
 
-import Container from "@/components/ui/Container";
-import Internship from "@/components/sections/internships/Internship";
-import InternshipsFilter from "@/components/sections/internships/InternshipFilter";
+import Container from '@/components/ui/Container';
+import InternshipCard from '@/components/sections/internships/Internship';
+import InternshipsFilter from '@/components/sections/internships/InternshipFilter';
 
-export default function Internships() {
-  const [internshipsFetched, setInternshipsFetched] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+async function getInternships() {
+  const url = getUrl();
+  const response = await fetch(`${url}/api/internship`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/internship`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setInternshipsFetched(data.internships);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status}`);
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const data = await response.json();
+  return data.internships;
+}
+
+export default async function Internships() {
+  const internships = (await getInternships()) as Internship[];
+
   return (
     <>
       <InternshipsFilter>
         <Container>
-          {internshipsFetched.map((internship) => (
-            <Internship key={internship.id} internship={internship} />
+          {internships.map((internship) => (
+            <>
+              {/* @ts-ignore: Type error between Internship Prisma and my types.d.ts */}
+              <InternshipCard key={internship.id} internship={internship} />
+            </>
           ))}
         </Container>
       </InternshipsFilter>

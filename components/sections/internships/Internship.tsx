@@ -5,7 +5,7 @@ import { InternshipType } from '@/types/internship';
 
 import { StarRatingCustom } from '@/components/ui/StarRating';
 
-export default function Internship({
+export default function InternshipCard({
   internship
 }: {
   internship: InternshipType;
