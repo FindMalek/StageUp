@@ -127,7 +127,7 @@ export async function GET(request: Request) {
   }
 }
 
-export async function GETALL(request: Request) {
+async function GETALL(request: Request) {
   try {
     const internships = await prisma.internship.findMany({
       include: {
@@ -159,7 +159,7 @@ export async function GETALL(request: Request) {
   }
 }
 
-export async function GETONE(request: Request) {
+async function GETONE(request: Request) {
   const url = new URL(request.url);
   const internshipId = url.search.split('?')[2].split('=')[1];
 
@@ -290,7 +290,7 @@ async function GETBYENTERPRISE(request: Request) {
   }
 }
 
-export async function GETBYINTERN(request: Request) {
+async function GETBYINTERN(request: Request) {
   const url = new URL(request.url);
   const userId = url.search.split('?')[2].split('=')[1];
 
