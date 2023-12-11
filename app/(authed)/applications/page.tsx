@@ -1,17 +1,50 @@
-import { DataTable } from '@/components/sections/application/enterprise/DataTable';
-import { columns } from '@/components/sections/application/enterprise/Columns';
-import { Internship } from '@prisma/client';
-import { getUrl } from '@/lib/utils';
+"use client";
 
-export default async function Applications() {
-  const internshipsFetched = (await fetch(`${getUrl()}/api/internship`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then((res) => res.json())
-    .then((data) => data.internships)) as Internship[];
+import React, { useState, useEffect } from "react";
+import { DataTable } from "@/components/sections/application/enterprise/DataTable";
+import { columns } from "@/components/sections/application/enterprise/Columns";
+import { Internship } from "@prisma/client";
+
+export default function Applications() {
+  const [internshipsFetched, setInternshipsFetched] = useState<Internship[]>(
+    [],
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/internship`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setInternshipsFetched(data.internships);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="container mx-auto py-10">

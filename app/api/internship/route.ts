@@ -95,7 +95,7 @@ export async function GET() {
 
     return NextResponse.json(
       {
-        internships: internships || [],
+        internships,
         message: 'Les stages ont été récupérés avec succès.'
       },
       {
