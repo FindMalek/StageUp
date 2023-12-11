@@ -77,12 +77,12 @@ export default function NewInternshipForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      positionTitle: 'again',
-      description: 'ajout',
-      location: 'action',
-      duration: '2',
+      positionTitle: '',
+      description: '',
+      location: '',
+      duration: '',
       documentationFileUrl: '',
-      questions: ['fsdfs'],
+      questions: [''],
       keywords: ''
     }
   });

@@ -87,9 +87,9 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   // This is an example of the 'url' module.
   // ?getType=GETALL
-  // ?getType=GETONE?internshipId=${internshipId}
-  // ?getType=GETBYENTERPRISE?userId=${userId}
-  // ?getType=GETBYINTERN?userId=${userId}
+  // ?getType=GETONE&internshipId=${internshipId}
+  // ?getType=GETBYENTERPRISE&userId=${userId}
+  // ?getType=GETBYINTERN&userId=${userId}
 
   const getType = url.searchParams.get('getType')?.toString().split('?')[0];
   console.log(url, getType);
@@ -161,9 +161,8 @@ async function GETALL(request: Request) {
 
 async function GETONE(request: Request) {
   const url = new URL(request.url);
-  const internshipId = url.search.split('?')[2].split('=')[1];
+  const internshipId = url.searchParams.get('internshipId');
   console.log(internshipId);
-
 
   if (!internshipId) {
     return NextResponse.json(
@@ -173,6 +172,24 @@ async function GETONE(request: Request) {
       },
       {
         status: 400
+      }
+    );
+  }
+
+  const internshipEntity = await prisma.internship.findUnique({
+    where: {
+      id: internshipId
+    }
+  });
+
+  if (!internshipEntity) {
+    return NextResponse.json(
+      {
+        message: "Le stage n'existe pas.",
+        internship: null
+      },
+      {
+        status: 404
       }
     );
   }
@@ -225,7 +242,7 @@ async function GETONE(request: Request) {
 
 async function GETBYENTERPRISE(request: Request) {
   const url = new URL(request.url);
-  const userId = url.search.split('?')[2].split('=')[1];
+  const userId = url.searchParams.get('userId');
 
   if (!userId) {
     return NextResponse.json(
@@ -294,7 +311,7 @@ async function GETBYENTERPRISE(request: Request) {
 
 async function GETBYINTERN(request: Request) {
   const url = new URL(request.url);
-  const userId = url.search.split('?')[2].split('=')[1];
+  const userId = url.searchParams.get('userId');
 
   if (!userId) {
     return NextResponse.json(

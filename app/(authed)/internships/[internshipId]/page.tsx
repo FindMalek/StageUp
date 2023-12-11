@@ -5,35 +5,37 @@ import InternshipOverview from '@/components/sections/internships/InternshipOver
 
 async function getInternship(internshipId: string) {
   const url = getUrl();
-  const response = await fetch(
-    `${url}/api/internship?getType=GETONE?internshipId=${internshipId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+  try {
+    const response = await fetch(
+      `${url}/api/internship?getType=GETONE&internshipId=${internshipId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
+    );
+
+    if (!response.ok) {
+      console.log(response);
+      throw new Error(`Error: ${response.status}`);
     }
-  );
 
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
+    const data = await response.json();
+    return data.internship;
+  } catch (error: any) {
+    console.error('Fetch error: ', error.message);
+    return null;
   }
-
-  const data = await response.json();
-  return data.internship;
 }
 
-export default async function InternshipPage({
-  params: { internshipId }
-}: {
-  params: {
-    internshipId: string;
-  };
-}) {
-  const internship = (await getInternship(internshipId)) as InternshipType;
+export default async function InternshipPage({ params }: any) {
+  const internship = (await getInternship(
+    params.internshipId
+  )) as InternshipType;
   return (
     <>
-      <InternshipOverview {...internship} />
+      <InternshipOverview internship={internship} />
     </>
   );
 }

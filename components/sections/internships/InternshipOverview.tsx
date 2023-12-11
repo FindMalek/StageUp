@@ -22,7 +22,7 @@ const policies = [
   }
 ];
 
-export default function InternshipOverview(internship: InternshipType) {
+export default function InternshipOverview({ internship }: { internship: InternshipType }) {
   return (
     <div className="rounded-lg bg-white">
       <div className="pb-16 pt-6 sm:pb-24">

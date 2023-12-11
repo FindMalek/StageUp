@@ -1,4 +1,4 @@
-import { Internship } from '@prisma/client';
+import { InternshipType } from '@/types/internship';
 
 import { getUrl } from '@/lib/utils';
 
@@ -24,7 +24,7 @@ async function getInternships() {
 }
 
 export default async function Internships() {
-  const internships = (await getInternships()) as Internship[];
+  const internships = (await getInternships()) as InternshipType[];
 
   return (
     <>
