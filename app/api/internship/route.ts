@@ -84,70 +84,102 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  try {
-    const url = new URL(request.url);
-    const userId = url.searchParams.get('userId');
+  const url = new URL(request.url);
+  const userId = url.searchParams.get('userId');
 
-    if (!userId) {
+  if (userId) {
+    try {
+      if (!userId) {
+        return NextResponse.json(
+          {
+            message: "L'identifiant de l'user est manquant.",
+            enterprise: null
+          },
+          {
+            status: 400
+          }
+        );
+      }
+
+      const enterpriseEntity = await prisma.enterprise.findUnique({
+        where: {
+          userId
+        }
+      });
+
+      if (!enterpriseEntity) {
+        return NextResponse.json(
+          {
+            message: "L'entreprise n'existe pas.",
+            enterprise: null
+          },
+          {
+            status: 404
+          }
+        );
+      }
+
+      const internships = await prisma.internship.findMany({
+        where: {
+          enterpriseId: enterpriseEntity.id
+        },
+        include: {
+          enterprise: true,
+          feedbacks: true,
+          questions: true
+        }
+      });
+
       return NextResponse.json(
         {
-          message: "L'identifiant de l'user est manquant.",
-          enterprise: null
+          internships,
+          message: 'Les stages ont été récupérés avec succès.'
         },
         {
-          status: 400
+          status: 200
+        }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        {
+          internships: null,
+          message: 'Une erreur est survenue lors de la récupération des stages.'
+        },
+        {
+          status: 500
         }
       );
     }
+  } else {
+    try {
+      const internships = await prisma.internship.findMany({
+        include: {
+          enterprise: true,
+          feedbacks: true,
+          questions: true
+        }
+      });
 
-    const enterpriseEntity = await prisma.enterprise.findUnique({
-      where: {
-        userId
-      }
-    });
-
-    if (!enterpriseEntity) {
       return NextResponse.json(
         {
-          message: "L'entreprise n'existe pas.",
-          enterprise: null
+          internships,
+          message: 'Les stages ont été récupérés avec succès.'
         },
         {
-          status: 404
+          status: 200
+        }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        {
+          internships: null,
+          message: 'Une erreur est survenue lors de la récupération des stages.'
+        },
+        {
+          status: 500
         }
       );
     }
-
-    const internships = await prisma.internship.findMany({
-      where: {
-        enterpriseId: enterpriseEntity.id
-      },
-      include: {
-        enterprise: true,
-        feedbacks: true,
-        questions: true
-      }
-    });
-
-    return NextResponse.json(
-      {
-        internships,
-        message: 'Les stages ont été récupérés avec succès.'
-      },
-      {
-        status: 200
-      }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      {
-        internships: null,
-        message: 'Une erreur est survenue lors de la récupération des stages.'
-      },
-      {
-        status: 500
-      }
-    );
   }
 }
 

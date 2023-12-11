@@ -38,9 +38,8 @@ async function getInternships(userId: string) {
 
 export default async function Applications() {
   const user = ((await getServerSession(authOptions)) as any).user;
-  console.log(user);
   const internships = (await getInternships(user.id)) as Internship[];
-  console.log(internships);
+
   return (
     <div className="container mx-auto py-10">
       <DataTable columns={columns} data={internships} />
