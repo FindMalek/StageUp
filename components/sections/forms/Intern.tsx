@@ -2,9 +2,10 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { uploadFile } from "@/lib/storage";
 
 import {
   Form,
@@ -77,21 +78,13 @@ const formSchema = z.object({
     .nonempty({
       message: "Le domaine d'étude ne peut pas être vide",
     }),
-  resumeUrl: z
-    .string({
-      required_error: "Le lien de votre CV est obligatoire",
-      invalid_type_error:
-        "Le lien de votre CV doit être une chaîne de caractères",
-    })
-    .nonempty({
-      message: "Le lien de votre CV ne peut pas être vide",
-    }),
+  resumeUrl: z.string().optional(),
   portfolioUrl: z
     .string()
     .optional()
     .refine(
       (url) => !url || isValidUrl(url),
-      "L'URL du votre siteweb doit être une URL valide"
+      "L'URL du votre siteweb doit être une URL valide",
     ),
   degrees: z.array(
     z
@@ -119,7 +112,7 @@ const formSchema = z.object({
           invalid_type_error: "La date de fondation doit être une date valide",
         }),
       })
-      .optional()
+      .optional(),
   ),
 });
 
@@ -127,7 +120,7 @@ export default function InternForm(session: SessionType) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [degrees, setDegrees] = useState<z.infer<typeof formSchema>["degrees"]>(
-    []
+    [],
   );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -140,6 +133,12 @@ export default function InternForm(session: SessionType) {
       degrees: [],
     },
   });
+
+  const [documentFile, setDocumentFile] = useState<File>();
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    setDocumentFile(selectedFile);
+  };
 
   const addDegree = () => {
     setDegrees([
@@ -186,8 +185,45 @@ export default function InternForm(session: SessionType) {
         throw new Error(await degrees.text());
       }
 
+      // TODO: Upload resume to Supabase Storage
+      const id = internData.intern.id;
+      if (documentFile) {
+        try {
+          values.resumeUrl = await uploadFile(
+            documentFile,
+            `/intern/${id}/resume.pdf`,
+          );
+
+          const resFile = await fetch("/api/intern", {
+            method: "PUT",
+            body: JSON.stringify({ ...values, id }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (resFile.status !== 201) {
+            throw new Error(await resFile.text());
+          }
+        } catch (error: any) {
+          toast({
+            title: "Le CV n'a pas été téléchargé",
+            description: error.message.split(":")[2],
+            variant: "destructive",
+            action: (
+              <ToastAction
+                onClick={() => {
+                  window.location.reload();
+                }}
+                altText="Try again"
+              >
+                Réessayer
+              </ToastAction>
+            ),
+          });
+        }
+      }
+
       window.location.href = "/internships";
-      
     } catch (error: any) {
       toast({
         title: "Quelque chose s'est mal passé",
@@ -229,12 +265,12 @@ export default function InternForm(session: SessionType) {
                       role="combobox"
                       className={cn(
                         "w-full justify-between",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
                       )}
                     >
                       {field.value
                         ? universities.find(
-                            (university) => university.value === field.value
+                            (university) => university.value === field.value,
                           )?.value
                         : "Choisir votre université"}
                       <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -259,7 +295,7 @@ export default function InternForm(session: SessionType) {
                               "mr-2 h-4 w-4",
                               university.value === field.value
                                 ? "opacity-100"
-                                : "opacity-0"
+                                : "opacity-0",
                             )}
                           />
                           {university.value}
@@ -326,21 +362,21 @@ export default function InternForm(session: SessionType) {
         />
 
         <div className="grid gap-4 lg:grid-cols-2 sm:grid-cols-1">
-          {/**
-           * TODO: Add a way to upload a resume (Supabase Storage)
-           */}
           <FormField
             control={form.control}
             name="resumeUrl"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Votre CV <span className="text-red-500">*</span>
+                  Votre CV{" "}
+                  <span className="text-muted-foreground">(optionnel)</span>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="https://drive.google.com/file/..."
-                    {...field}
+                    id="resumeUrl"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    type="file"
                   />
                 </FormControl>
                 <FormMessage />
@@ -444,7 +480,7 @@ export default function InternForm(session: SessionType) {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
