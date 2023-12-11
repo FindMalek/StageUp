@@ -3,12 +3,12 @@ import { Internship } from '@prisma/client';
 import { getUrl } from '@/lib/utils';
 
 import Container from '@/components/ui/Container';
-import InternshipCard from '@/components/sections/internships/Internship';
+import InternshipCard from '@/components/sections/internships/InternshipCard';
 import InternshipsFilter from '@/components/sections/internships/InternshipFilter';
 
 async function getInternships() {
   const url = getUrl();
-  const response = await fetch(`${url}/api/internship`, {
+  const response = await fetch(`${url}/api/internship?getType=GETALL`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

@@ -90,7 +90,7 @@ export async function GET(request: Request) {
   // ?getType=GETONE?internshipId=${internshipId}
   // ?getType=GETBYENTERPRISE?userId=${userId}
   // ?getType=GETBYINTERN?userId=${userId}
-  
+
   const getType = url.searchParams.get('getType')?.toString().split('?')[0];
 
   if (!getType) {
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
       }
     );
   }
-  console.log(getType);
+
   switch (getType) {
     case 'GETALL':
       return await GETALL(request);
