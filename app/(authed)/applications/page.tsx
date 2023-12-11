@@ -1,21 +1,35 @@
+import { getUrl } from '@/lib/utils';
+import { authOptions } from '@/lib/auth';
+
+import { getServerSession } from 'next-auth';
 import { Internship } from '@prisma/client';
 
 import { DataTable } from '@/components/sections/application/enterprise/DataTable';
+import AccessDenied from '@/components/sections/display/AccessDenied';
 import { columns } from '@/components/sections/application/enterprise/Columns';
 
-import { getUrl } from '@/lib/utils';
-
-async function getInternships() {
+async function getInternships(userId: string) {
   const url = getUrl();
-  const response = await fetch(`${url}/api/internship`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    `${url}/api/internship?userId=${userId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
-  });
+  );
 
   if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
+    return (
+      <AccessDenied
+        statusCode={response.status}
+        title="Une erreur est survenue"
+        description={response.statusText}
+        button="Retourner à l'accueil"
+        link="/"
+      />
+    );
   }
 
   const data = await response.json();
@@ -23,8 +37,10 @@ async function getInternships() {
 }
 
 export default async function Applications() {
-  const internships = (await getInternships()) as Internship[];
-
+  const user = ((await getServerSession(authOptions)) as any).user;
+  console.log(user);
+  const internships = (await getInternships(user.id)) as Internship[];
+  console.log(internships);
   return (
     <div className="container mx-auto py-10">
       <DataTable columns={columns} data={internships} />

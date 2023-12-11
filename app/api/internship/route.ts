@@ -83,9 +83,45 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get('userId');
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          message: "L'identifiant de l'user est manquant.",
+          enterprise: null
+        },
+        {
+          status: 400
+        }
+      );
+    }
+
+    const enterpriseEntity = await prisma.enterprise.findUnique({
+      where: {
+        userId
+      }
+    });
+
+    if (!enterpriseEntity) {
+      return NextResponse.json(
+        {
+          message: "L'entreprise n'existe pas.",
+          enterprise: null
+        },
+        {
+          status: 404
+        }
+      );
+    }
+
     const internships = await prisma.internship.findMany({
+      where: {
+        enterpriseId: enterpriseEntity.id
+      },
       include: {
         enterprise: true,
         feedbacks: true,
@@ -103,7 +139,6 @@ export async function GET() {
       }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       {
         internships: null,
