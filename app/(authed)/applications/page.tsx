@@ -4,9 +4,9 @@ import { getServerSession } from 'next-auth';
 import { getUrl } from '@/lib/utils';
 import { authOptions } from '@/lib/auth';
 
-import { DataTable } from '@/components/sections/application/enterprise/DataTable';
 import AccessDenied from '@/components/sections/display/AccessDenied';
 import { columns } from '@/components/sections/application/enterprise/Columns';
+import { DataTable } from '@/components/sections/application/enterprise/DataTable';
 
 async function getInternships(userId: string) {
   const url = getUrl();
