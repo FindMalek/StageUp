@@ -1,5 +1,5 @@
-import { getServerSession } from 'next-auth';
 import { Internship } from '@prisma/client';
+import { getServerSession } from 'next-auth';
 
 import { getUrl } from '@/lib/utils';
 import { authOptions } from '@/lib/auth';
