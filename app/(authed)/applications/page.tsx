@@ -5,8 +5,8 @@ import { getUrl } from '@/lib/utils';
 import { authOptions } from '@/lib/auth';
 
 import AccessDenied from '@/components/sections/display/AccessDenied';
-import { DataTable } from '@/components/sections/application/enterprise/DataTable';
 import { columns } from '@/components/sections/application/enterprise/Columns';
+import { DataTable } from '@/components/sections/application/enterprise/DataTable';
 
 async function getInternships(userId: string) {
   const url = getUrl();
